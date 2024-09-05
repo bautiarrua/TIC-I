@@ -1,9 +1,7 @@
 package org.example.tici.Model.Entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 
 @Entity
 @Table (name = "booking")
@@ -11,7 +9,84 @@ public class Booking {
     @Id
     private int bookingId;
 
+    @ManyToOne   // Un usuario puede tener muchas reservas
+    @JoinColumn(name = "user_id", nullable = false)
+    private Users userId;
 
+    @ManyToOne
+    @JoinColumn(name = "id_function", nullable = false)
+    private Function function;
 
+    @ManyToOne
+    @JoinColumn(name = "movie_title", referencedColumnName = "title", nullable = false)
+    private Movie movieTitle;
+
+    @ManyToOne
+    @JoinColumn(name = "projection_room", nullable = false)
+    private ProjectionRoom projectionRoom;
+
+    @ManyToOne
+    @JoinColumn(name = "id_branch", nullable = false)
+    private Branches branchId;
+
+    public Booking() {
+    }
+
+    public Booking(int bookingId, Users userId, Function function, Movie movieTitle, ProjectionRoom projectionRoom, Branches branchId) {
+        this.bookingId = bookingId;
+        this.userId = userId;
+        this.function = function;
+        this.movieTitle = movieTitle;
+        this.projectionRoom = projectionRoom;
+        this.branchId = branchId;
+    }
+
+    public int getBookingId() {
+        return bookingId;
+    }
+
+    public void setBookingId(int bookingId) {
+        this.bookingId = bookingId;
+    }
+
+    public Users getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Users userId) {
+        this.userId = userId;
+    }
+
+    public Function getFunction() {
+        return function;
+    }
+
+    public void setFunction(Function function) {
+        this.function = function;
+    }
+
+    public Movie getMovieTitle() {
+        return movieTitle;
+    }
+
+    public void setMovieTitle(Movie movieTitle) {
+        this.movieTitle = movieTitle;
+    }
+
+    public ProjectionRoom getProjectionRoom() {
+        return projectionRoom;
+    }
+
+    public void setProjectionRoom(ProjectionRoom projectionRoom) {
+        this.projectionRoom = projectionRoom;
+    }
+
+    public Branches getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(Branches branchId) {
+        this.branchId = branchId;
+    }
 
 }
