@@ -3,6 +3,7 @@ package org.example.tici.Model.Entities;
 import jakarta.persistence.*;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 @Entity
@@ -14,7 +15,7 @@ public class Function {
     private int id_fun;
 
     @Column(name = "day_month", nullable = false)
-    private Date dayMonth;
+    private int dayMonth;
 
     @Column(name = "start_time", nullable = false)
     private LocalTime startTime;
@@ -28,18 +29,18 @@ public class Function {
     @Column(name = "movie_title", nullable = false, length = 200)
     private String movieTitle;
 
-    // Si deseas mapear las relaciones con otras entidades
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "projection_room_number", insertable = false, updatable = false)
     private ProjectionRoom projectionRoom;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "title", insertable = false, updatable = false)
+    @JoinColumn(name = "movie_title", insertable = false, updatable = false)
     private Movie movie;
+
     public Function(){
 
     }
-    public Function(int id_fun,Date date,LocalTime start_time,
+    public Function(int id_fun, int date,LocalTime start_time,
                     LocalTime end_time, int projection_room_number, String movie_title ){
         this.id_fun=id_fun;
         this.dayMonth=date;
@@ -57,11 +58,11 @@ public class Function {
         this.id_fun = id_fun;
     }
 
-    public Date getDate() {
+    public int getDate() {
         return dayMonth;
     }
 
-    public void setDate(Date date) {
+    public void setDate(int date) {
         this.dayMonth = date;
     }
 
