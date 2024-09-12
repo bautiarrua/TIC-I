@@ -17,7 +17,7 @@ public class ProjectionRoom {
     private int numRows;
 
     @ManyToOne
-    @JoinColumn(name = "branch_id")
+    @JoinColumn(name = "branch_id", insertable = false, updatable = false)
     private Branches branch;
 
     public ProjectionRoom() {
