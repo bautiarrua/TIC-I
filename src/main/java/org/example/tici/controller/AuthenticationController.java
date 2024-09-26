@@ -23,9 +23,7 @@ public class AuthenticationController {
         try {
             Users logUser = userService.loadUserByUsername(user);
             return ResponseEntity.ok(logUser);
-        } catch (UsernameNotFound e1) {
-            return ResponseEntity.badRequest().build();
-        } catch (WrongPassword e2) {
+        } catch (UsernameNotFound | WrongPassword e1) {
             return ResponseEntity.badRequest().build();
         }
     }
