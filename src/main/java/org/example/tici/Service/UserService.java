@@ -5,6 +5,9 @@ import org.example.tici.Exceptions.WrongPassword;
 import org.example.tici.Exceptions.YaExiste;
 import org.example.tici.Model.Entities.Users;
 import org.example.tici.Repository.UserRepository;
+import org.example.tici.controller.UserController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,15 +19,17 @@ import java.util.Objects;
 public class UserService {
     @Autowired
     public BCryptPasswordEncoder passwordEncoder;
-
+    @Autowired
     private UserRepository userRepository;
-
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     public Users registerUser(Users user) throws YaExiste {
+
         if( userRepository.findByMail(user.getMail()) != null){
+            //logger.error(userRepository.findByMail(user.getMail()).getMail().toString());
            throw new YaExiste();
         }
-        String hashedPassword = passwordEncoder.encode(user.getPasword());
-        user.setPasword(hashedPassword);
+        String hashedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(hashedPassword);
         userRepository.save(user);
         return user;
     }
@@ -36,7 +41,7 @@ public class UserService {
             throw new UsernameNotFound("Username not found");
         }
 
-        if(Objects.equals(user.getPasword(), passwordEncoder.encode(userLoad.getPasword()))){
+        if(Objects.equals(user.getPassword(), passwordEncoder.encode(userLoad.getPassword()))){
             //dar acceso a la pagina con usuario
             return user;
         }
