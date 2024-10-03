@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MovieRepository {
-    Movie findByIdMovie(int Id);
+    Movie findByIdMovie(int idMovie);
 }

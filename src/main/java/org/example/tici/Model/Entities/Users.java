@@ -10,7 +10,7 @@ import jakarta.persistence.Table;
 public class Users {
     @Id
     @Column(name = "id")
-    private int id_us;
+    private int idUs;
 
     @Column(name = "name", nullable = false, length = 100)
     private String name;
@@ -22,18 +22,18 @@ public class Users {
     public Users() {
     }
     public Users(int id, String name, String mail, String pasword){
-        this.id_us =id;
+        this.idUs =id;
         this.name = name;
         this.mail = mail;
         this.pasword = pasword;
     }
 
-    public int getId_us() {
-        return id_us;
+    public int getIdUs() {
+        return idUs;
     }
 
-    public void setId_us(int id_us) {
-        this.id_us = id_us;
+    public void setIdUs(int idUs) {
+        this.idUs = idUs;
     }
 
     public String getName() {

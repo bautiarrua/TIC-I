@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BranchesRepository extends JpaRepository<Branches, Integer> {
 
-    Branches findById_bran(int Id);
+    Branches findByIdBran(int idBran);
 
 }

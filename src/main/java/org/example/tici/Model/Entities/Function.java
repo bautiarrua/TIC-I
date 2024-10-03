@@ -12,7 +12,7 @@ public class Function {
 
     @Id
     @Column(name = "id_function")
-    private int id_fun;
+    private int idFun;
 
     @Column(name = "day_month", nullable = false)
     private int dayMonth;
@@ -40,22 +40,22 @@ public class Function {
     public Function(){
 
     }
-    public Function(int id_fun, int date,LocalTime start_time,
-                    LocalTime end_time, int projection_room_number, String movie_title ){
-        this.id_fun=id_fun;
+    public Function(int idFun, int date,LocalTime startTime,
+                    LocalTime endTime, int projectionRoomNumber, String movieTitle ){
+        this.idFun=idFun;
         this.dayMonth=date;
-        this.startTime = start_time;
-        this.endTime = end_time;
-        this.projectionRoomNumber = projection_room_number;
-        this.movieTitle = movie_title;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.projectionRoomNumber = projectionRoomNumber;
+        this.movieTitle = movieTitle;
     }
 
-    public int getId_fun() {
-        return id_fun;
+    public int getIdFun() {
+        return idFun;
     }
 
-    public void setId_fun(int id_fun) {
-        this.id_fun = id_fun;
+    public void setIdFun(int idFun) {
+        this.idFun = idFun;
     }
 
     public int getDate() {
@@ -66,28 +66,28 @@ public class Function {
         this.dayMonth = date;
     }
 
-    public LocalTime getStart_time() {
+    public LocalTime getStartTime() {
         return startTime;
     }
 
-    public void setStart_time(LocalTime start_time) {
+    public void setStartTime(LocalTime start_time) {
         this.startTime = start_time;
     }
 
-    public LocalTime getEnd_time() {
+    public LocalTime getEndTime() {
         return endTime;
     }
 
-    public void setEnd_time(LocalTime end_time) {
+    public void setEndTime(LocalTime end_time) {
         this.endTime = end_time;
     }
 
-    public int getProjection_room_number() {
+    public int getProjectionRoomNumber() {
         return projectionRoomNumber;
     }
 
-    public void setProjection_room_number(int projection_room_number) {
-        this.projectionRoomNumber = projection_room_number;
+    public void setProjection_room_number(int projectionRoomNumber) {
+        this.projectionRoomNumber = projectionRoomNumber;
     }
 
     public String getMovie_title() {

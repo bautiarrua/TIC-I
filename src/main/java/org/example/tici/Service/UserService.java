@@ -5,16 +5,11 @@ import org.example.tici.Exceptions.WrongPassword;
 import org.example.tici.Exceptions.YaExiste;
 import org.example.tici.Model.Entities.Users;
 import org.example.tici.Repository.UserRepository;
-import org.example.tici.config.SecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 @Service
@@ -36,7 +31,7 @@ public class UserService {
 
     public Users loadUserByUsername(Users userLoad) throws UsernameNotFound{
 
-        Users user = userRepository.findByUsername(userLoad.getName());
+        Users user = userRepository.findByName(userLoad.getName());
         if(user == null){
             throw new UsernameNotFound("Username not found");
         }

@@ -10,21 +10,22 @@ import jakarta.persistence.Table;
 public class Branches {
     @Id
     @Column(name = "id", nullable = false)
-    private int id_bran;
+    private int idBran;
+
     @Column(name = "neighborhood", nullable = false, length = 100)
     private String neighborhood;
     public Branches(){
     }
     public Branches(int id, String neighborhood) {
-        this.id_bran = id;
+        this.idBran = id;
         this.neighborhood = neighborhood;
     }
-    public int getId_bran() {
-        return id_bran;
+    public int getIdBran() {
+        return idBran;
     }
 
-    public void setId_bran(int id_bran) {
-        this.id_bran = id_bran;
+    public void setIdBran(int idBran) {
+        this.idBran = idBran;
     }
 
     public String getNeighborhood() {
