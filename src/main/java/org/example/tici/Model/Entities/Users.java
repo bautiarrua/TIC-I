@@ -17,15 +17,15 @@ public class Users {
 
     @Column(name = "mail", nullable = false, length = 100)
     private String mail;
-    @Column(name = "pasword",nullable = false, length = 15)
-    private String pasword;
+    @Column(name = "pasword",nullable = false, length = 100)
+    private String password;
     public Users() {
     }
-    public Users(int id, String name, String mail, String pasword){
+    public Users(int id, String name, String mail, String password){
         this.idUs =id;
         this.name = name;
         this.mail = mail;
-        this.pasword = pasword;
+        this.password = password;
     }
 
     public int getIdUs() {
@@ -52,11 +52,11 @@ public class Users {
         this.mail = mail;
     }
 
-    public String getPasword() {
-        return pasword;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPasword(String pasword) {
-        this.pasword = pasword;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
