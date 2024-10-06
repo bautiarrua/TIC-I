@@ -12,10 +12,10 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<Users> registrarUsuario(@RequestBody Users user) {
+    public ResponseEntity<String> registrarUsuario(@RequestBody Users user) {
         try {
             Users nuevoUsuario = userService.registerUser(user);
-            return ResponseEntity.ok(nuevoUsuario);
+            return ResponseEntity.ok("se guardo");
         } catch (Exception YaExiste) {
             return ResponseEntity.badRequest().build();
         }
