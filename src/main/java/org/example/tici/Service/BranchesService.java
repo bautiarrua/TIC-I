@@ -1,6 +1,7 @@
 package org.example.tici.Service;
 
 import org.example.tici.Exceptions.NoExiste;
+import org.example.tici.Exceptions.YaExiste;
 import org.example.tici.Model.Entities.Billboard;
 import org.example.tici.Model.Entities.Branches;
 import org.example.tici.Model.Entities.Movie;
@@ -17,9 +18,17 @@ import java.util.List;
 public class BranchesService {
     @Autowired
     private BranchesRepository branchesRepository;
-    private BillboardRepository billboardRepository;
-    private MovieRepository movieRepository;
 
+    public Branches addBran(Branches branch) throws YaExiste{
+        if(branchesRepository.findByIdBran(branch.getIdBran()) != null){
+            System.out.println("-----------YaExiste-------------");
+            throw new YaExiste();
+        }
+        branchesRepository.save(branch);
+        System.out.println("-----------save-------------");
+        return branch;
+    }
+    /*
     public List<Movie> consultBillboard(Branches branch) throws NoExiste {
         List<Movie> movies = new ArrayList<>();
         if (branchesRepository.findById(branch.getIdBran()) == null) {
@@ -27,11 +36,10 @@ public class BranchesService {
         }
         Billboard bill = billboardRepository.findByIdBran(branch.getIdBran());
         for (int i = 0; i < bill.getMovie().size(); i++) {
-            int id_M = bill.getMovie().get(i);
-            movies.add(movieRepository.findByIdMovie(id_M));
+            String title = bill.getMovie().get(i);
+            movies.add(movieRepository.findByTitle(title));
         }
         return movies;
-
     }
-
+    */
 }

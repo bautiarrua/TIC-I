@@ -8,10 +8,7 @@ import org.example.tici.Service.BranchesService;
 import org.example.tici.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,7 +19,19 @@ public class BranchesController {
     @Autowired
     BranchesService branchesService;
 
-    @PostMapping("/billboard")
+    @PostMapping("/add")
+    public ResponseEntity<String> addBranch(@RequestBody Branches branch){
+        try {
+            System.out.println("-----------try-------------");
+            branchesService.addBran(branch);
+            return ResponseEntity.ok("se guardo");
+        } catch (Exception e) {
+            System.out.println("-----------catch-------------");
+            return ResponseEntity.badRequest().build();
+        }
+    }
+    /*
+    @GetMapping("/billboard")
     public ResponseEntity<List<Movie>> consultBillboard(@RequestBody Branches branches) {
         try {
             List<Movie> movies = branchesService.consultBillboard(branches);
@@ -31,5 +40,9 @@ public class BranchesController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+     */
+
+
 
 }

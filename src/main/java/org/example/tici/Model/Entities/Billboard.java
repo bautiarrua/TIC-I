@@ -17,9 +17,9 @@ public class Billboard {
     private Branches branchId;
 
     @ElementCollection
-    private List<Integer> movies;
+    private List<String> movies;
 
-    public Billboard(int idBill, Branches branchId, List<Integer> movies) {
+    public Billboard(int idBill, Branches branchId, List<String> movies) {
         this.idBill = idBill;
         this.branchId = branchId;
         this.movies = movies;
@@ -45,11 +45,8 @@ public class Billboard {
         this.branchId = branchId;
     }
 
-    public List<Integer> getMovie() {
+    public List<String> getMovie() {
         return movies;
     }
 
-    public void setMovie(List<Integer> movies) {
-        this.movies = movies;
-    }
 }

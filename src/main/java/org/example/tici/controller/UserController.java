@@ -16,15 +16,12 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<String> registrarUsuario(@RequestBody Users user) {
         try {
-            Users nuevoUsuario = userService.registerUser(user);
+            userService.registerUser(user);
             return ResponseEntity.ok("se guardo");
-        } catch (Exception YaExiste) {
-            return ResponseEntity.ok("User registered successfully");
         } catch (Exception e) {
             //logger.error(e.toString());
             //logger.error(user.toString());
             //return ResponseEntity.badRequest().build();
-
             return ResponseEntity.badRequest().build();
 
         }

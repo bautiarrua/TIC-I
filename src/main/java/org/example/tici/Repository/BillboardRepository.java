@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BillboardRepository {
-    Billboard findByIdBran(int id );
+
 }
