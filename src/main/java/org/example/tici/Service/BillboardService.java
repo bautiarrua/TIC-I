@@ -1,20 +1,15 @@
 package org.example.tici.Service;
-
+import org.example.tici.Exceptions.LimiteAlcanzado;
 import org.example.tici.Exceptions.NoExiste;
 import org.example.tici.Exceptions.YaExiste;
 import org.example.tici.Model.Entities.Billboard;
 import org.example.tici.Model.Entities.Branches;
-import org.example.tici.Model.Entities.Movie;
 import org.example.tici.Repository.BillboardRepository;
 import org.example.tici.Repository.BranchesRepository;
 import org.example.tici.Repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.List;
 
 @Service
 public class BillboardService {

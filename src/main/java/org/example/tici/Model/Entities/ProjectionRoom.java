@@ -7,7 +7,7 @@ public class ProjectionRoom {
     @Id
     private int roomNumber;
 
-    @Column(nullable = false, length = 50) // indica que no pueden haber valores null y un largo maximo de 50 caracteres
+    @Column(nullable = false, length = 50)
     private String type;
 
     @Column (nullable = false)
@@ -17,18 +17,18 @@ public class ProjectionRoom {
     private int numRows;
 
     @ManyToOne
-    @JoinColumn(name = "branch_id", insertable = false, updatable = false)
-    private Branches branch;
+    @JoinColumn(name = "branch_id", nullable = false)
+    private Branches branchId;
 
     public ProjectionRoom() {
     }
 
-    public ProjectionRoom(int roomNumber, String type, int numSeats, int numRows, Branches branch) {
+    public ProjectionRoom(int roomNumber, String type, int numSeats, int numRows, Branches branchId) {
         this.roomNumber = roomNumber;
         this.type = type;
         this.numSeats = numSeats;
         this.numRows = numRows;
-        this.branch = branch;
+        this.branchId = branchId;
     }
 
     public int getRoomNumber() {
@@ -64,10 +64,10 @@ public class ProjectionRoom {
     }
 
     public Branches getBranch() {
-        return branch;
+        return branchId;
     }
 
-    public void setBranch(Branches branch) {
-        this.branch = branch;
+    public void setBranch(Branches branchId) {
+        this.branchId = branchId;
     }
 }
