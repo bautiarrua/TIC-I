@@ -42,7 +42,6 @@ public class UserService {
         }
 
         if(Objects.equals(user.getPassword(), passwordEncoder.encode(userLoad.getPassword()))){
-            //dar acceso a la pagina con usuario
             return user;
         }
         throw new WrongPassword("Wrong Password");

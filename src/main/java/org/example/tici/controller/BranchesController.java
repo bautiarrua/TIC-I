@@ -22,26 +22,12 @@ public class BranchesController {
     @PostMapping("/add")
     public ResponseEntity<String> addBranch(@RequestBody Branches branch){
         try {
-            System.out.println("-----------try-------------");
             branchesService.addBran(branch);
             return ResponseEntity.ok("se guardo");
         } catch (Exception e) {
-            System.out.println("-----------catch-------------");
             return ResponseEntity.badRequest().build();
         }
     }
-    /*
-    @GetMapping("/billboard")
-    public ResponseEntity<List<Movie>> consultBillboard(@RequestBody Branches branches) {
-        try {
-            List<Movie> movies = branchesService.consultBillboard(branches);
-            return ResponseEntity.ok(movies);
-        } catch (Exception YaExiste) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
-     */
 
 
 

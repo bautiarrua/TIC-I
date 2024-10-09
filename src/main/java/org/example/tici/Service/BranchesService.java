@@ -21,25 +21,10 @@ public class BranchesService {
 
     public Branches addBran(Branches branch) throws YaExiste{
         if(branchesRepository.findByIdBran(branch.getIdBran()) != null){
-            System.out.println("-----------YaExiste-------------");
             throw new YaExiste();
         }
         branchesRepository.save(branch);
-        System.out.println("-----------save-------------");
         return branch;
     }
-    /*
-    public List<Movie> consultBillboard(Branches branch) throws NoExiste {
-        List<Movie> movies = new ArrayList<>();
-        if (branchesRepository.findById(branch.getIdBran()) == null) {
-            throw new NoExiste();
-        }
-        Billboard bill = billboardRepository.findByIdBran(branch.getIdBran());
-        for (int i = 0; i < bill.getMovie().size(); i++) {
-            String title = bill.getMovie().get(i);
-            movies.add(movieRepository.findByTitle(title));
-        }
-        return movies;
-    }
-    */
+
 }

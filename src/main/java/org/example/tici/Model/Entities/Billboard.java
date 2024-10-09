@@ -2,6 +2,7 @@ package org.example.tici.Model.Entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -11,7 +12,6 @@ public class Billboard {
     @Id
     @Column(name = "id", nullable = false)
     private int idBill;
-
     @ManyToOne
     @JoinColumn(name = "id_branch", nullable = false)
     private Branches branchId;
@@ -19,10 +19,10 @@ public class Billboard {
     @ElementCollection
     private List<String> movies;
 
-    public Billboard(int idBill, Branches branchId, List<String> movies) {
+    public Billboard(int idBill, Branches branchId) {
         this.idBill = idBill;
         this.branchId = branchId;
-        this.movies = movies;
+        this.movies = new ArrayList<>();
     }
 
     public Billboard() {
@@ -33,9 +33,7 @@ public class Billboard {
         return idBill;
     }
 
-    public void setIdBill(int idBill) {
-        idBill = idBill;
-    }
+    public void setIdBill(int idBill) {this.idBill = idBill;}
 
     public Branches getBranchId() {
         return branchId;
