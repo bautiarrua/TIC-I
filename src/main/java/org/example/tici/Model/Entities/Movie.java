@@ -27,17 +27,22 @@ public class Movie {
     @Column(nullable = false, length = 50)
     private String type;
 
-    public Movie(){
+    @Column(nullable = true, length = 700)
+    private String imageUrl;
+
+    public Movie() {
     }
 
-    public Movie(String title, String description, String genre, String language, int duration, String type) {
+    public Movie(String title, String description, String genre, String language, int duration, String type, String imageUrl) {
         this.title = title;
         this.description = description;
         this.genre = genre;
         this.language = language;
         this.duration = duration;
         this.type = type;
+        this.imageUrl = imageUrl; // Inicializamos el campo imageUrl
     }
+
     public String getTitle() {
         return title;
     }
@@ -85,4 +90,13 @@ public class Movie {
     public void setType(String type) {
         this.type = type;
     }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }
+
