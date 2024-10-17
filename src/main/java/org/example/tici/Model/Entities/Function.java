@@ -41,12 +41,12 @@ public class Function {
 
     }
     public Function(int idFun, int date,LocalTime startTime,
-                    LocalTime endTime, int projectionRoomNumber, String movieTitle ){
+                    LocalTime endTime,ProjectionRoom projectionRoom, String movieTitle ){
         this.idFun=idFun;
         this.dayMonth=date;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.projectionRoomNumber = projectionRoomNumber;
+        this.projectionRoom = projectionRoom;
         this.movieTitle = movieTitle;
     }
 
@@ -82,12 +82,12 @@ public class Function {
         this.endTime = end_time;
     }
 
-    public int getProjectionRoomNumber() {
-        return projectionRoomNumber;
+    public ProjectionRoom getProjectionRoom() {
+        return projectionRoom;
     }
 
-    public void setProjection_room_number(int projectionRoomNumber) {
-        this.projectionRoomNumber = projectionRoomNumber;
+    public void setProjectionRoom(ProjectionRoom projectionRoom) {
+        this.projectionRoom = projectionRoom;
     }
 
     public String getMovie_title() {

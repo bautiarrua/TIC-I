@@ -1,5 +1,6 @@
 package org.example.tici.controller;
 
+import org.example.tici.DTO.MovieDTO;
 import org.example.tici.Model.Entities.Billboard;
 import org.example.tici.Model.Entities.Branches;
 import org.example.tici.Model.Entities.Movie;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/billboard")
@@ -42,10 +44,17 @@ public class BillboardController {
     }
 
     @GetMapping("/branch/{id}")
-    public ResponseEntity<List<String>> getBillboardByBranchId(@PathVariable int id) {
+    public ResponseEntity<List<MovieDTO>> getBillboardByBranchId(@PathVariable int id) {
         try {
             Billboard billboard = billboardService.getBillboardByBranchId(id);
-            return ResponseEntity.ok(billboard.getMovie());
+            List<Movie> movies = billboard.getMovies();
+
+            // Convertir a DTO para devolver solo los campos necesarios (título y URL)
+            List<MovieDTO> movieDTOs = movies.stream()
+                    .map(movie -> new MovieDTO(movie.getTitle(), movie.getImageUrl(),movie.getGenre() ,movie.getDescription(), movie.getDuration()))
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.ok(movieDTOs);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
         }

@@ -4,6 +4,7 @@ import org.example.tici.Exceptions.NoExiste;
 import org.example.tici.Exceptions.YaExiste;
 import org.example.tici.Model.Entities.Billboard;
 import org.example.tici.Model.Entities.Branches;
+import org.example.tici.Model.Entities.Movie;
 import org.example.tici.Repository.BillboardRepository;
 import org.example.tici.Repository.BranchesRepository;
 import org.example.tici.Repository.MovieRepository;
@@ -21,7 +22,7 @@ public class BillboardService {
     private BranchesRepository branchesRepository;
 
     public Billboard addBillboard(Billboard billboard) throws  YaExiste, NoExiste{
-        if(billboardRepository. findByIdBill(billboard.getIdBill()) != null){
+        if(billboardRepository.findByIdBill(billboard.getIdBill()) != null){
             throw new YaExiste();
         }
         if(branchesRepository.findByIdBran(billboard.getBranchId().getIdBran()) == null){
@@ -38,11 +39,12 @@ public class BillboardService {
             throw new NoExiste();
         }
         Billboard billboard = billboardRepository.findByIdBill(idBill);
-        if(billboard.getMovie().contains(movieTitle)){
+        if(billboard.getMovies().contains(movieTitle)){
             System.out.println("Esta cancion ya esta agregada");
             throw new YaExiste();
         }
-        billboard.getMovie().add(movieTitle);
+        Movie nMovie = movieRepository.findByTitle(movieTitle);
+        billboard.getMovies().add(nMovie);
         return billboardRepository.save(billboard);
     }
     public Billboard getBillboardByBranchId(int branchId) throws NoExiste {

@@ -1,15 +1,13 @@
 package org.example.tici.Model.Entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "users")
 public class Users {
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idUs;
 
     @Column(name = "name", nullable = false, length = 100)
@@ -21,8 +19,7 @@ public class Users {
     private String password;
     public Users() {
     }
-    public Users(int id, String name, String mail, String password){
-        this.idUs =id;
+    public Users(String name, String mail, String password){
         this.name = name;
         this.mail = mail;
         this.password = password;

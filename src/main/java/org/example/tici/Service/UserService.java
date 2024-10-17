@@ -28,7 +28,7 @@ public class UserService {
     }
 
     public Users loadUserByEmailAndPassword(String mail, String password) throws UsernameNotFound{
-
+        
         Users user = userRepository.findByMail(mail);
         if(user == null){
             throw new UsernameNotFound("User not found");
