@@ -12,17 +12,17 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     @Autowired
     UserService userService;
-    //private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     @PostMapping("/register")
     public ResponseEntity<String> registrarUsuario(@RequestBody Users user) {
         try {
             userService.registerUser(user);
             return ResponseEntity.ok("se guardo");
         } catch (Exception e) {
-            //logger.error(e.toString());
-            //logger.error(user.toString());
-            //return ResponseEntity.badRequest().build();
+            logger.error(e.toString());
+            logger.error(user.toString());
             return ResponseEntity.badRequest().build();
+//            return ResponseEntity.badRequest().build();
 
         }
     }

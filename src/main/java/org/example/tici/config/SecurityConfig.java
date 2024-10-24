@@ -25,6 +25,8 @@ public class SecurityConfig {
                         .requestMatchers("/movies/add").permitAll()
                         .requestMatchers("/branches/add").permitAll()
                         .requestMatchers("/billboard/add").permitAll()
+                        .requestMatchers("/auth/login").permitAll()
+                        .requestMatchers("movies/reserve").permitAll()
                         .anyRequest().authenticated()  // Requerir autenticación para el resto de los endpoints
                 );
 

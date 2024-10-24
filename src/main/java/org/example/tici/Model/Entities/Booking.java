@@ -3,13 +3,16 @@ package org.example.tici.Model.Entities;
 import jakarta.persistence.*;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 
+import java.util.Set;
+
 @Entity
 @Table (name = "booking")
 public class Booking {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int bookingId;
 
-    @ManyToOne   // Un usuario puede tener muchas reservas
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private Users userId;
 
@@ -28,6 +31,9 @@ public class Booking {
     @ManyToOne
     @JoinColumn(name = "id_branch", nullable = false)
     private Branches branchId;
+
+    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
+    private Set<SeatBook> seats;
 
     public Booking() {
     }
@@ -87,6 +93,14 @@ public class Booking {
 
     public void setBranchId(Branches branchId) {
         this.branchId = branchId;
+    }
+
+    public Set<SeatBook> getSeats() {
+        return seats;
+    }
+
+    public void setSeats(Set<SeatBook> seats) {
+        this.seats = seats;
     }
 
 }

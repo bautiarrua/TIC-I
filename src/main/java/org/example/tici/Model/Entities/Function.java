@@ -26,8 +26,9 @@ public class Function {
     @Column(name = "projection_room_number", nullable = false)
     private int projectionRoomNumber;
 
-    @Column(name = "movie_title", nullable = false, length = 200)
-    private String movieTitle;
+    @ManyToOne
+    @JoinColumn (name = "movie_title", nullable = false)
+    private Movie movieTitle;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "projection_room_number", insertable = false, updatable = false)
@@ -41,7 +42,7 @@ public class Function {
 
     }
     public Function(int idFun, int date,LocalTime startTime,
-                    LocalTime endTime,ProjectionRoom projectionRoom, String movieTitle ){
+                    LocalTime endTime,ProjectionRoom projectionRoom, Movie movieTitle ){
         this.idFun=idFun;
         this.dayMonth=date;
         this.startTime = startTime;
@@ -90,11 +91,11 @@ public class Function {
         this.projectionRoom = projectionRoom;
     }
 
-    public String getMovie_title() {
+    public Movie getMovieTitle() {
         return movieTitle;
     }
 
-    public void setMovie_id(String movie_title) {
+    public void setMovie_id(Movie movie_title) {
         this.movieTitle = movie_title;
     }
 }

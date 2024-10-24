@@ -15,8 +15,10 @@ public class Users {
 
     @Column(name = "mail", nullable = false, length = 100)
     private String mail;
+
     @Column(name = "pasword",nullable = false, length = 100)
     private String password;
+
     public Users() {
     }
     public Users(String name, String mail, String password){
