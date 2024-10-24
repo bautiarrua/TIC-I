@@ -18,9 +18,22 @@ public class UserService {
     private UserRepository userRepository;
 
     public Users registerUser(Users user) throws YaExiste {
+        if (user.getMail() == null || user.getMail().isEmpty()) {
+            throw new IllegalArgumentException("Email cannot be null or empty");
+        }
+
+        if (user.getName() == null || user.getName().isEmpty()) {
+            throw new IllegalArgumentException("Email cannot be null or empty");
+        }
+
+        if (user.getPassword() == null || user.getPassword().isEmpty()) {
+            throw new IllegalArgumentException("Email cannot be null or empty");
+        }
+
         if( userRepository.findByMail(user.getMail()) != null){
            throw new YaExiste();
         }
+
         String hashedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(hashedPassword);
         userRepository.save(user);
