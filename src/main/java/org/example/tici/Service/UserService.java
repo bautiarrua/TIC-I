@@ -41,7 +41,15 @@ public class UserService {
     }
 
     public Users loadUserByEmailAndPassword(String mail, String password) throws UsernameNotFound{
-        
+
+        if (mail == null || mail.trim().isEmpty()) {
+            throw new IllegalArgumentException("Email cannot be null or empty");
+        }
+
+        if (password == null || password.trim().isEmpty()) {
+            throw new IllegalArgumentException("Password cannot be null or empty");
+        }
+
         Users user = userRepository.findByMail(mail);
         if(user == null){
             throw new UsernameNotFound("User not found");
