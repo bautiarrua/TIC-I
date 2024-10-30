@@ -32,7 +32,6 @@ public class BillboardController {
     @PostMapping("/addMovie")
     public ResponseEntity<String> addMovieToBillboard(@RequestBody Map<String, Object> requestData) {
         try {
-            System.out.println("------------------INTENTA-------------------");
             String movieTitle = (String) requestData.get("movieTitle");
             int idBill = (Integer) requestData.get("idBill");
 
@@ -41,6 +40,26 @@ public class BillboardController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("The movie or billboard does not exist");
         }
+    }
+
+    @GetMapping("/movies")
+    public ResponseEntity<List<MovieDTO>> getMovies(
+            @RequestParam(required = false) Integer branchId,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String language,
+            @RequestParam(required = false) String format
+    ){
+        try {
+            List<Movie> filteredMovies = billboardService.getFilteredMovies(branchId, category, language, format);
+            List<MovieDTO> movieDTOs = filteredMovies.stream()
+                    .map(movie -> new MovieDTO(movie.getTitle(), movie.getImageUrl(), movie.getGenre(), movie.getDescription(), movie.getDuration()))
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.ok(movieDTOs);
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(null);
+        }
+
     }
 
     @GetMapping("/branch/{id}")
