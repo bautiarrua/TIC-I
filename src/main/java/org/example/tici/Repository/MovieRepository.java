@@ -13,7 +13,8 @@ public interface MovieRepository extends JpaRepository<Movie, String> {
 
     @Query("SELECT m FROM Movie m " +
             "JOIN m.billboards b " +
-            "WHERE (:branchId IS NULL OR b.branchId = :branchId) " +
+            "JOIN b.branchId br " +
+            "WHERE (:branchId IS NULL OR br.idBran = :branchId) " +
             "AND (:category IS NULL OR m.genre = :category) " +
             "AND (:language IS NULL OR m.language = :language) " +
             "AND (:type IS NULL OR m.type = :type)")
@@ -21,6 +22,7 @@ public interface MovieRepository extends JpaRepository<Movie, String> {
                                    @Param("category") String category,
                                    @Param("language") String language,
                                    @Param("type") String type);
+
 
 }
 

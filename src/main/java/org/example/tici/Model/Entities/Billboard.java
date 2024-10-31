@@ -15,8 +15,13 @@ public class Billboard {
     @JoinColumn(name = "id_branch", nullable = false)
     private Branches branchId;
 
-
-    @ManyToMany(mappedBy = "billboards")
+    // Cambiar la lista de cadenas por una lista de entidades Movie
+    @ManyToMany
+    @JoinTable(
+            name = "billboard_movies",
+            joinColumns = @JoinColumn(name = "billboard_id"),
+            inverseJoinColumns = @JoinColumn(name = "id_movie")
+    )
     private List<Movie> movies;
 
     public Billboard(int idBill, Branches branchId) {
@@ -51,5 +56,4 @@ public class Billboard {
     public void setMovies(List<Movie> movies) {
         this.movies = movies;
     }
-
 }

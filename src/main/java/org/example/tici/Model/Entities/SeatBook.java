@@ -99,5 +99,3 @@ public class SeatBook implements Serializable {
         this.branch = branch;
     }
 }
-
-

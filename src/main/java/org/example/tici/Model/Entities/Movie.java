@@ -29,12 +29,7 @@ public class Movie {
     @Column(nullable = true, length = 700)
     private String imageUrl;
 
-    @ManyToMany
-    @JoinTable(
-            name = "billboard_movies",
-            joinColumns = @JoinColumn(name = "id_movie"),
-            inverseJoinColumns = @JoinColumn(name = "billboard_id")
-    )
+    @ManyToMany(mappedBy = "movies")
     private List<Billboard> billboards;
 
     public Movie() {
@@ -105,13 +100,6 @@ public class Movie {
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
-
-    public List<Billboard> getBillboards() {
-        return billboards;
-    }
-
-    public void setBillboards(List<Billboard> billboards) {
-        this.billboards = billboards;
-    }
 }
+
 
