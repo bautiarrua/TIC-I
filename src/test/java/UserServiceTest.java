@@ -17,8 +17,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-@SpringBootTest(classes = MainPrueba.class) // Asegúrate de reemplazar 'YourApplication' con tu clase principal
-@ExtendWith(MockitoExtension.class) // Usando MockitoExtension para inicializar mocks
+@SpringBootTest(classes = MainPrueba.class)
+@ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
     @Mock
@@ -207,4 +207,6 @@ public class UserServiceTest {
             userService.loadUserByEmailAndPassword(email, "");
         });
     }
+
+
 }
