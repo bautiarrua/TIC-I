@@ -1,11 +1,9 @@
 package org.example.tici.Model.Entities;
 
 import jakarta.persistence.*;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
+
 @Entity
 @Table(name = "function")
 public class Function {
@@ -26,28 +24,32 @@ public class Function {
     @Column(name = "projection_room_number", nullable = false)
     private int projectionRoomNumber;
 
-    @Column(name = "movie_title", nullable = false, length = 200)
-    private String movieTitle;
+    @Column(name = "branch_id", nullable = false)
+    private int branchId;
+
+    @ManyToOne
+    @JoinColumn (name = "movie_title", nullable = false)
+    private Movie movie;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "projection_room_number", insertable = false, updatable = false)
     private ProjectionRoom projectionRoom;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "movie_title", insertable = false, updatable = false)
-    private Movie movie;
+    @JoinColumn(name = "branch_id",insertable = false, updatable = false)
+    private Branches branches;
 
     public Function(){
 
     }
     public Function(int idFun, int date,LocalTime startTime,
-                    LocalTime endTime,ProjectionRoom projectionRoom, String movieTitle ){
+                    LocalTime endTime,ProjectionRoom projectionRoom, Movie movieTitle ){
         this.idFun=idFun;
         this.dayMonth=date;
         this.startTime = startTime;
         this.endTime = endTime;
         this.projectionRoom = projectionRoom;
-        this.movieTitle = movieTitle;
+        this.movie = movieTitle;
     }
 
     public int getIdFun() {
@@ -90,11 +92,11 @@ public class Function {
         this.projectionRoom = projectionRoom;
     }
 
-    public String getMovie_title() {
-        return movieTitle;
+    public Movie getMovie() {
+        return movie;
     }
 
-    public void setMovie_id(String movie_title) {
-        this.movieTitle = movie_title;
+    public void setMovie_id(Movie movie_title) {
+        this.movie = movie_title;
     }
 }

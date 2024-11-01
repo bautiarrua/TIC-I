@@ -3,13 +3,16 @@ package org.example.tici.Model.Entities;
 import jakarta.persistence.*;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 
+import java.util.Set;
+
 @Entity
 @Table (name = "booking")
 public class Booking {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int bookingId;
 
-    @ManyToOne   // Un usuario puede tener muchas reservas
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private Users userId;
 
@@ -22,18 +25,20 @@ public class Booking {
     private Movie movieTitle;
 
     @ManyToOne
-    @JoinColumn(name = "projection_room", nullable = false)
+    @JoinColumn(name = "projection_room_number", nullable = false)
     private ProjectionRoom projectionRoom;
 
     @ManyToOne
-    @JoinColumn(name = "id_branch", nullable = false)
+    @JoinColumn(name = "branch_id", nullable = false)
     private Branches branchId;
+
+    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
+    private Set<SeatBook> seats;
 
     public Booking() {
     }
 
-    public Booking(int bookingId, Users userId, Function function, Movie movieTitle, ProjectionRoom projectionRoom, Branches branchId) {
-        this.bookingId = bookingId;
+    public Booking(Users userId, Function function, Movie movieTitle, ProjectionRoom projectionRoom, Branches branchId) {
         this.userId = userId;
         this.function = function;
         this.movieTitle = movieTitle;
@@ -89,4 +94,13 @@ public class Booking {
         this.branchId = branchId;
     }
 
+    public Set<SeatBook> getSeats() {
+        return seats;
+    }
+
+    public void setSeats(Set<SeatBook> seats) {
+        this.seats = seats;
+    }
+
 }
+

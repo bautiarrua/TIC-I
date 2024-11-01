@@ -10,6 +10,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 import java.util.List;
 
@@ -27,8 +28,25 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Configuración CORS
                 .csrf(csrf -> csrf.disable()) // Desactiva CSRF para permitir solicitudes desde el frontend en desarrollo
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/users/register", "/auth/login", "/movies/title/**", "/billboard/**").permitAll() // Permite el acceso a estos endpoints sin autenticación
-                        .anyRequest().authenticated() // Requiere autenticación para los demás endpoints
+                        .requestMatchers(
+                                "/users/register",
+                                "/auth/login",
+                                "/movies/title/**",
+                                "/billboard/**",
+                                "/billboard/addMovie",
+                                "/billboard/branch/**",
+                                "/movies/add",
+                                "/branches/add",
+                                "/billboard/add",
+                                "/billboard/movies"
+                        ).permitAll() // Permite el acceso a estos endpoints sin autenticación
+                        .requestMatchers("/movies/reserve").authenticated() // Requiere autenticación para reservar
+                        .anyRequest().authenticated() // Todas las demás solicitudes requieren autenticación
+                )
+                .sessionManagement(session -> session
+                        .sessionFixation(sessionFixation -> sessionFixation.migrateSession())
+                        .maximumSessions(1)
+                        .expiredUrl("/auth/login") // Redirigir al login si la sesión expira
                 );
 
         return http.build();
@@ -54,5 +72,10 @@ public class SecurityConfig implements WebMvcConfigurer {
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("*")
                 .allowCredentials(true);
+    }
+
+    @Bean
+    public HttpSessionEventPublisher httpSessionEventPublisher() {
+        return new HttpSessionEventPublisher();
     }
 }

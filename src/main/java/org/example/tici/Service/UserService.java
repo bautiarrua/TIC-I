@@ -18,9 +18,22 @@ public class UserService {
     private UserRepository userRepository;
 
     public Users registerUser(Users user) throws YaExiste {
+        if (user.getMail() == null || user.getMail().isEmpty()) {
+            throw new IllegalArgumentException("Email cannot be null or empty");
+        }
+
+        if (user.getName() == null || user.getName().isEmpty()) {
+            throw new IllegalArgumentException("Email cannot be null or empty");
+        }
+
+        if (user.getPassword() == null || user.getPassword().isEmpty()) {
+            throw new IllegalArgumentException("Email cannot be null or empty");
+        }
+
         if( userRepository.findByMail(user.getMail()) != null){
            throw new YaExiste();
         }
+
         String hashedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(hashedPassword);
         userRepository.save(user);
@@ -28,7 +41,15 @@ public class UserService {
     }
 
     public Users loadUserByEmailAndPassword(String mail, String password) throws UsernameNotFound{
-        
+
+        if (mail == null || mail.trim().isEmpty()) {
+            throw new IllegalArgumentException("Email cannot be null or empty");
+        }
+
+        if (password == null || password.trim().isEmpty()) {
+            throw new IllegalArgumentException("Password cannot be null or empty");
+        }
+
         Users user = userRepository.findByMail(mail);
         if(user == null){
             throw new UsernameNotFound("User not found");
@@ -39,5 +60,13 @@ public class UserService {
         }
         System.out.println("______________________------------------------Se entro______________________------------------------");
         return user;
+    }
+
+    public Users findByIdUser (Integer id){
+        return userRepository.findByIdUs(id);
+    }
+
+    public Users findByMail (String mail){
+        return userRepository.findByMail(mail);
     }
 }

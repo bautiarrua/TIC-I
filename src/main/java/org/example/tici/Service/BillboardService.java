@@ -11,6 +11,9 @@ import org.example.tici.Repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 
 @Service
 public class BillboardService {
@@ -26,9 +29,8 @@ public class BillboardService {
             throw new YaExiste();
         }
         if(branchesRepository.findByIdBran(billboard.getBranchId().getIdBran()) == null){
-            throw new NoExiste();
+            billboardRepository.save(billboard);
         }
-        billboardRepository.save(billboard);
         return billboard;
     }
     public Billboard addMovieToBillboard(String movieTitle, int idBill) throws NoExiste, YaExiste {
@@ -57,6 +59,10 @@ public class BillboardService {
         }
         return billboard;
 
+    }
+
+    public List<Movie> getFilteredMovies(int branchId, String category, String language, String format){
+        return movieRepository.findFilteredMovies(branchId, category, language, format);
     }
 
 

@@ -15,7 +15,7 @@ public class Branches {
     @Column(name = "neighborhood", nullable = false, length = 100)
     private String neighborhood;
 
-    @Column(name = "nro_rooms", nullable = false)
+    @Column(name = "num_room", nullable = false)
     private int nroRooms;
 
     private int cantidad;
