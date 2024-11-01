@@ -34,12 +34,12 @@ public class SeatBook implements Serializable {
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "projection_room", nullable = false)
+    @JoinColumn(name = "projection_room_number", nullable = false)
     private ProjectionRoom projectionRoom;
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "id_branch", nullable = false)
+    @JoinColumn(name = "branch_id", nullable = false)
     private Branches branch;
 
     // Getters y Setters

@@ -5,9 +5,13 @@ import org.example.tici.DTO.LoginRequest;
 import org.example.tici.Exceptions.UsernameNotFound;
 import org.example.tici.Exceptions.WrongPassword;
 import org.example.tici.Model.Entities.Users;
+import org.example.tici.SecurityAuthentication.AuthResponse;
+import org.example.tici.SecurityAuthentication.JwtUtil;
 import org.example.tici.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,17 +22,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
     @Autowired
     UserService userService;
+    @Autowired
+    JwtUtil jwtUtil;
 
     @PostMapping("/login")
-    public ResponseEntity<Users> login(@RequestBody LoginRequest loginRequest, HttpSession session) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
             Users loggedUser = userService.loadUserByEmailAndPassword(loginRequest.getMail(), loginRequest.getPassword());
-            session.setAttribute("loggedUser", loggedUser);
-            return ResponseEntity.ok(loggedUser);
+
+            String token = jwtUtil.generateToken(loggedUser.getMail());
+
+            return ResponseEntity.ok(new AuthResponse(token, loggedUser));
 
         } catch (UsernameNotFound | WrongPassword e1) {
             e1.printStackTrace();
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.status(401).body(null);
         }
     }
 

@@ -60,4 +60,12 @@ public class UserService {
         }
         return user;
     }
+
+    public Users findByIdUser (Integer id){
+        return userRepository.findByIdUs(id);
+    }
+
+    public Users findByMail (String mail){
+        return userRepository.findByMail(mail);
+    }
 }

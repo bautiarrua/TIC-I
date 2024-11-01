@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 
 @Entity
 public class ProjectionRoom {
+
     @Id
+    @Column(nullable = false)
     private int roomNumber;
 
     @Column(nullable = false, length = 50)
@@ -70,4 +72,6 @@ public class ProjectionRoom {
     public void setBranch(Branches branchId) {
         this.branchId = branchId;
     }
+
+
 }

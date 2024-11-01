@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 @Configuration
 public class SecurityConfig {
@@ -17,20 +18,32 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())  // Deshabilitar CSRF para simplificar pruebas
+                .csrf(csrf -> csrf.disable()) // Deshabilitar CSRF para simplificar pruebas
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/users/register").permitAll()  // Permitir acceso a /users/register
-                        .requestMatchers("/billboard/addMovie").permitAll()  // Permitir acceso sin autenticación a /billboard/addMovie
-                        .requestMatchers("/billboard/branch/**").permitAll()  // Permitir acceso sin autenticación a /billboard/branch/*
-                        .requestMatchers("/movies/add").permitAll()
-                        .requestMatchers("/branches/add").permitAll()
-                        .requestMatchers("/billboard/add").permitAll()
-                        .requestMatchers("/auth/login").permitAll()
-                        .requestMatchers("movies/reserve").permitAll()
-                        .requestMatchers("/billboard/movies").permitAll()
-                        .anyRequest().authenticated()  // Requerir autenticación para el resto de los endpoints
+                        .requestMatchers(
+                                "/auth/login",
+                                "/users/register",
+                                "/billboard/addMovie",
+                                "/billboard/branch/**",
+                                "/movies/add",
+                                "/branches/add",
+                                "/billboard/add",
+                                "/billboard/movies"
+                        ).permitAll() // Permitir acceso público a estas rutas
+                        .requestMatchers("/movies/reserve").authenticated() // Requiere autenticación para reservar
+                        .anyRequest().authenticated() // Todas las demás solicitudes requieren autenticación
+                )
+                .sessionManagement(session -> session
+                        .sessionFixation(sessionFixation -> sessionFixation.migrateSession())
+                        .maximumSessions(1)
+                        .expiredUrl("/auth/login") // Redirigir al login si la sesión expira
                 );
 
         return http.build();
+    }
+
+    @Bean
+    public HttpSessionEventPublisher httpSessionEventPublisher() {
+        return new HttpSessionEventPublisher();
     }
 }

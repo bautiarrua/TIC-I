@@ -25,11 +25,11 @@ public class Booking {
     private Movie movieTitle;
 
     @ManyToOne
-    @JoinColumn(name = "projection_room", nullable = false)
+    @JoinColumn(name = "projection_room_number", nullable = false)
     private ProjectionRoom projectionRoom;
 
     @ManyToOne
-    @JoinColumn(name = "id_branch", nullable = false)
+    @JoinColumn(name = "branch_id", nullable = false)
     private Branches branchId;
 
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
@@ -38,8 +38,7 @@ public class Booking {
     public Booking() {
     }
 
-    public Booking(int bookingId, Users userId, Function function, Movie movieTitle, ProjectionRoom projectionRoom, Branches branchId) {
-        this.bookingId = bookingId;
+    public Booking(Users userId, Function function, Movie movieTitle, ProjectionRoom projectionRoom, Branches branchId) {
         this.userId = userId;
         this.function = function;
         this.movieTitle = movieTitle;

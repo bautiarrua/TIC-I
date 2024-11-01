@@ -7,11 +7,13 @@ import org.example.tici.Model.Entities.Movie;
 import org.example.tici.Repository.BillboardRepository;
 import org.example.tici.Service.BillboardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -44,22 +46,28 @@ public class BillboardController {
 
     @GetMapping("/movies")
     public ResponseEntity<List<MovieDTO>> getMovies(
-            @RequestParam(required = false) Integer branchId,
-            @RequestParam(required = false) String category,
-            @RequestParam(required = false) String language,
-            @RequestParam(required = false) String format
-    ){
+            @RequestParam(required = false) Optional<Integer> branchId,
+            @RequestParam(required = false) Optional<String> category,
+            @RequestParam(required = false) Optional<String> language,
+            @RequestParam(required = false) Optional<String> format
+    ) {
         try {
-            List<Movie> filteredMovies = billboardService.getFilteredMovies(branchId, category, language, format);
+            // Usamos orElse para asignar un valor predeterminado o null-safe
+            Integer resolvedBranchId = branchId.orElse(null);
+            String resolvedCategory = category.orElse(null);
+            String resolvedLanguage = language.orElse(null);
+            String resolvedFormat = format.orElse(null);
+
+            List<Movie> filteredMovies = billboardService.getFilteredMovies(resolvedBranchId, resolvedCategory, resolvedLanguage, resolvedFormat);
             List<MovieDTO> movieDTOs = filteredMovies.stream()
                     .map(movie -> new MovieDTO(movie.getTitle(), movie.getImageUrl(), movie.getGenre(), movie.getDescription(), movie.getDuration()))
                     .collect(Collectors.toList());
 
             return ResponseEntity.ok(movieDTOs);
-        } catch (Exception e){
-            return ResponseEntity.badRequest().body(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-
     }
 
     @GetMapping("/branch/{id}")

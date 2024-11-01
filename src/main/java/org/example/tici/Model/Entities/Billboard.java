@@ -8,11 +8,11 @@ import java.util.List;@Entity
 public class Billboard {
 
     @Id
-    @Column(name = "id", nullable = false)
+    //@Column(name = "id", nullable = false)
     private int idBill;
 
     @ManyToOne
-    @JoinColumn(name = "id_branch", nullable = false)
+    @JoinColumn(name = "branch_id", nullable = false)
     private Branches branchId;
 
     // Cambiar la lista de cadenas por una lista de entidades Movie

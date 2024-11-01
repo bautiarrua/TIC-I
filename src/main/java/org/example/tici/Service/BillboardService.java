@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -60,7 +61,7 @@ public class BillboardService {
 
     }
 
-    public List<Movie> getFilteredMovies(Integer branchId, String category, String language, String format){
+    public List<Movie> getFilteredMovies(int branchId, String category, String language, String format){
         return movieRepository.findFilteredMovies(branchId, category, language, format);
     }
 

@@ -18,11 +18,10 @@ public interface MovieRepository extends JpaRepository<Movie, String> {
             "AND (:category IS NULL OR m.genre = :category) " +
             "AND (:language IS NULL OR m.language = :language) " +
             "AND (:type IS NULL OR m.type = :type)")
-    List<Movie> findFilteredMovies(@Param("branchId") Integer branchId,
+    List<Movie> findFilteredMovies(@Param("branchId") int branchId,
                                    @Param("category") String category,
                                    @Param("language") String language,
                                    @Param("type") String type);
-
 
 }
 
