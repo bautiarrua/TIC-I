@@ -19,4 +19,8 @@ public class MovieService {
         movieRepository.save(movie);
         return movie;
     }
+
+    public Movie findByTitle(String title) {
+        return movieRepository.findByTitle(title);
+    }
 }

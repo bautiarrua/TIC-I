@@ -37,6 +37,7 @@ public class UserService {
         if(!passwordEncoder.matches(password, user.getPassword())){
             throw new WrongPassword("Wrong Password");
         }
+        System.out.println("______________________------------------------Se entro______________________------------------------");
         return user;
     }
 }
