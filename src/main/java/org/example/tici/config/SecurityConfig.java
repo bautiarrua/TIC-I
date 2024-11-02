@@ -1,14 +1,23 @@
 package org.example.tici.config;
 
+
+import org.example.tici.SecurityAuthentication.JwtRequestFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 @Configuration
 public class SecurityConfig {
+
+    private final JwtRequestFilter jwtRequestFilter;
+
+    public SecurityConfig(JwtRequestFilter jwtRequestFilter) {
+        this.jwtRequestFilter = jwtRequestFilter;
+    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -18,7 +27,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Deshabilitar CSRF para simplificar pruebas
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(
                                 "/auth/login",
@@ -29,21 +38,24 @@ public class SecurityConfig {
                                 "/branches/add",
                                 "/billboard/add",
                                 "/billboard/movies"
-                        ).permitAll() // Permitir acceso público a estas rutas
-                        .requestMatchers("/movies/reserve").authenticated() // Requiere autenticación para reservar
-                        .anyRequest().authenticated() // Todas las demás solicitudes requieren autenticación
+                        ).permitAll()
+                        .requestMatchers("/movies/reserve").authenticated()
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
                         .sessionFixation(sessionFixation -> sessionFixation.migrateSession())
                         .maximumSessions(1)
-                        .expiredUrl("/auth/login") // Redirigir al login si la sesión expira
+                        .expiredUrl("/auth/login")
                 );
 
+        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+
 
     @Bean
     public HttpSessionEventPublisher httpSessionEventPublisher() {
         return new HttpSessionEventPublisher();
     }
 }
+
