@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface BookingRepository extends JpaRepository<Booking, Integer> {
 
     Booking findByFunction(Function function);
+    boolean existsBookingByBookingId(int bookingId);
+    void deleteBookingByBookingId(int bookingId);
 }

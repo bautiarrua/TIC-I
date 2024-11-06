@@ -39,7 +39,7 @@ public class SecurityConfig {
                                 "/billboard/add",
                                 "/billboard/movies"
                         ).permitAll()
-                        .requestMatchers("/movies/reserve").authenticated()
+                        .requestMatchers("/movies/reserve", "/movies/cancelReserve").authenticated()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

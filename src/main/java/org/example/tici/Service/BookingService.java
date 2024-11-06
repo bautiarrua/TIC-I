@@ -1,5 +1,6 @@
 package org.example.tici.Service;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.example.tici.Model.Entities.*;
 
 import org.example.tici.Repository.BookingRepository;
@@ -76,6 +77,26 @@ public class BookingService {
         });
 
         return true;
+    }
+
+    public boolean cancelReserve (int bookingId, List<Integer> seatsToCancel) {
+        Optional<Booking> bookingOptional = bookingRepository.findById(bookingId);
+
+        if (bookingOptional.isPresent()) {
+            Booking booking = bookingOptional.get();
+
+            List<SeatBook> seatsToBeCancelled = seatsRepository.findByBookingAndSeatNumberIn(booking, seatsToCancel);
+            if (seatsToCancel.isEmpty()) {
+                return false;
+            }
+            seatsRepository.deleteAll(seatsToBeCancelled);
+
+            if (seatsRepository.findByBooking(booking).isEmpty()){
+                bookingRepository.deleteBookingByBookingId(bookingId);
+            }
+            return true;
+        }
+        return false;
     }
 
 
