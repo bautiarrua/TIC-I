@@ -1,5 +1,5 @@
 # Etapa de construcción
-FROM maven:3.8.6-openjdk-17-slim AS build
+FROM docker.io/library/maven:3.8.6-openjdk-17-slim AS build
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
