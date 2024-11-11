@@ -7,15 +7,13 @@ import org.example.tici.Exceptions.WrongPassword;
 import org.example.tici.Model.Entities.Users;
 import org.example.tici.SecurityAuthentication.AuthResponse;
 import org.example.tici.SecurityAuthentication.JwtUtil;
+import org.example.tici.SecurityAuthentication.TokenBlacklistService;
 import org.example.tici.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -24,6 +22,8 @@ public class AuthenticationController {
     UserService userService;
     @Autowired
     JwtUtil jwtUtil;
+    @Autowired
+    TokenBlacklistService tokenBlacklistService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
@@ -41,8 +41,15 @@ public class AuthenticationController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(HttpSession session) {
+    public ResponseEntity<String> logout(HttpSession session, @RequestHeader("Authorization") String token) {
         session.invalidate();
+
+        if (token != null && token.startsWith("Bearer ")) {
+            String jwtToken = token.substring(7);
+            tokenBlacklistService.invalidateToken(jwtToken);
+        }
+
         return ResponseEntity.ok("Logged out successfully");
     }
+
 }

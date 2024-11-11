@@ -3,6 +3,7 @@ package org.example.tici.controller;
 import jakarta.servlet.http.HttpSession;
 import org.apache.catalina.User;
 import org.example.tici.DTO.BookingRequest;
+import org.example.tici.DTO.CancelRequest;
 import org.example.tici.Model.Entities.Movie;
 import org.example.tici.Model.Entities.Users;
 import org.example.tici.Repository.UserRepository;
@@ -15,16 +16,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
-
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/movies")
 public class MovieController {
 
@@ -46,17 +40,6 @@ public class MovieController {
             return ResponseEntity.badRequest().build();
         }
     }
-
-    @GetMapping("/title/{title}")
-    public ResponseEntity<Movie> getMovieBySlug(@PathVariable String title) {
-        Movie movie = movieService.findByTitle(title);
-        if (movie != null) {
-            return ResponseEntity.ok(movie);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-    }
-
     @PostMapping("/reserve")
     public ResponseEntity<String> reserveMovie(@RequestBody BookingRequest bookingRequest, @RequestHeader("Authorization") String token) {
         if (token == null || !token.startsWith("Bearer ")) {
@@ -85,6 +68,43 @@ public class MovieController {
         return ResponseEntity.status(400).body("Reservation failed: Seats may already be reserved.");
     }
 
+    @PostMapping("/cancelReserve")
+    public ResponseEntity<String> cancelReserveFunction(@RequestBody CancelRequest cancelRequest, @RequestHeader("Authorization") String token) {
 
+        if (token == null || !token.startsWith("Bearer ")) {
+            return ResponseEntity.status(401).body("Unauthorized: Please log in.");
+        }
+
+        String jwtToken = token.substring(7);
+        String username = jwtUtil.extractUsername(jwtToken);
+
+        if (!jwtUtil.validateToken(jwtToken, username)) {
+            return ResponseEntity.status(401).body("Unauthorized: Invalid token.");
+        }
+
+        Users loggedUser  = userService.findByMail(username);
+        if (loggedUser  == null) {
+            return ResponseEntity.status(404).body("User  not found.");
+        }
+
+        int bookingId = cancelRequest.getBookingId();
+        List<Integer> seatsToCancel = cancelRequest.getSeatsToCancel();
+
+        boolean success = bookingService.cancelReserve(bookingId, seatsToCancel);
+        if (success) {
+            return ResponseEntity.ok("Your cancellation was successfully processed");
+        }
+        return ResponseEntity.status(400).body("Unfortunately, we couldn't complete your cancellation at this time. Please try again.");
+    }
+
+    @GetMapping("/title/{title}")
+    public ResponseEntity<Movie> getMovieBySlug(@PathVariable String title) {
+        Movie movie = movieService.findByTitle(title);
+        if (movie != null) {
+            return ResponseEntity.ok(movie);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 
 }

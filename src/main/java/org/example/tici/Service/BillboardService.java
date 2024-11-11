@@ -24,37 +24,36 @@ public class BillboardService {
     @Autowired
     private BranchesRepository branchesRepository;
 
-    public Billboard addBillboard(Billboard billboard) throws  YaExiste, NoExiste{
-        try {
-            if (billboardRepository.findByIdBill(billboard.getIdBill()) != null) {
-                throw new YaExiste();
-            }
-            if (branchesRepository.findByIdBran(billboard.getBranchId().getIdBran()) == null) {
-                throw new NoExiste();
-            }
-            Billboard savedBillboard = billboardRepository.save(billboard);
-            return savedBillboard;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
-    }
-    public Billboard addMovieToBillboard(String movieTitle, int idBill) throws NoExiste, YaExiste {
-        if(movieRepository.findByTitle(movieTitle).getTitle() == null){
-            throw new NoExiste();
-        }
-        if(billboardRepository.findByIdBill(idBill) == null){
-            throw new NoExiste();
-        }
-        Billboard billboard = billboardRepository.findByIdBill(idBill);
-        if(billboard.getMovies().contains(movieTitle)){
-            System.out.println("Esta cancion ya esta agregada");
+    public Billboard addBillboard(Billboard billboard) throws YaExiste, NoExiste {
+        if (billboardRepository.findByIdBill(billboard.getIdBill()) != null) {
             throw new YaExiste();
         }
-        Movie nMovie = movieRepository.findByTitle(movieTitle);
-        billboard.getMovies().add(nMovie);
+        if (branchesRepository.findByIdBran(billboard.getBranchId().getIdBran()) != null) {
+            return billboardRepository.save(billboard);
+        } else {
+            throw new NoExiste();
+        }
+    }
+
+    public Billboard addMovieToBillboard(String movieTitle, int idBill) throws NoExiste, YaExiste {
+        Movie movie = movieRepository.findByTitle(movieTitle);
+        if (movie == null) {
+            throw new NoExiste();
+        }
+
+        Billboard billboard = billboardRepository.findByIdBill(idBill);
+        if (billboard == null) {
+            throw new NoExiste();
+        }
+
+        if (billboard.getMovies().contains(movie)) {
+            throw new YaExiste();
+        }
+
+        billboard.getMovies().add(movie);
         return billboardRepository.save(billboard);
     }
+
     public Billboard getBillboardByBranchId(int branchId) throws NoExiste {
         if(billboardRepository.findByIdBill(branchId) == null){
             throw new NoExiste();
@@ -70,8 +69,5 @@ public class BillboardService {
     public List<Movie> getFilteredMovies(int branchId, String category, String language, String format){
         return movieRepository.findFilteredMovies(branchId, category, language, format);
     }
-
-
-
 
 }
