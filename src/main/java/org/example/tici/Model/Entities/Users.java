@@ -12,11 +12,11 @@ import java.util.Collections;
 public class Users implements UserDetails {
     @Id
     @Column(name = "id")
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idUs;
 
     @Column(name = "name", nullable = false, length = 100)
     private String name;
+
 
     @Column(name = "mail", nullable = false, length = 100)
     private String mail;
@@ -26,7 +26,7 @@ public class Users implements UserDetails {
 
     public Users() {
     }
-    public Users(String name, String mail, String password){
+    public Users(String name, String mail, String password, String ageRating){
         this.name = name;
         this.mail = mail;
         this.password = password;

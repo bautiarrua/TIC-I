@@ -6,10 +6,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, String> {
     Movie findByTitle(String title);
+    Optional<Movie> findMovieByTitle(String title);
 
     @Query("SELECT m FROM Movie m " +
             "JOIN m.billboards b " +

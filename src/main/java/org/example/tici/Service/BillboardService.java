@@ -25,13 +25,19 @@ public class BillboardService {
     private BranchesRepository branchesRepository;
 
     public Billboard addBillboard(Billboard billboard) throws  YaExiste, NoExiste{
-        if(billboardRepository.findByIdBill(billboard.getIdBill()) != null){
-            throw new YaExiste();
+        try {
+            if (billboardRepository.findByIdBill(billboard.getIdBill()) != null) {
+                throw new YaExiste();
+            }
+            if (branchesRepository.findByIdBran(billboard.getBranchId().getIdBran()) == null) {
+                throw new NoExiste();
+            }
+            Billboard savedBillboard = billboardRepository.save(billboard);
+            return savedBillboard;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
         }
-        if(branchesRepository.findByIdBran(billboard.getBranchId().getIdBran()) == null){
-            billboardRepository.save(billboard);
-        }
-        return billboard;
     }
     public Billboard addMovieToBillboard(String movieTitle, int idBill) throws NoExiste, YaExiste {
         if(movieRepository.findByTitle(movieTitle).getTitle() == null){

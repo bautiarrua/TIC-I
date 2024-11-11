@@ -22,8 +22,6 @@ public class UserController {
             logger.error(e.toString());
             logger.error(user.toString());
             return ResponseEntity.badRequest().build();
-//            return ResponseEntity.badRequest().build();
-
         }
     }
 

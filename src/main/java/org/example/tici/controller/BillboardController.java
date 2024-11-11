@@ -10,7 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.example.tici.Exceptions.NoExiste;
+import org.example.tici.Exceptions.YaExiste;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -26,7 +27,14 @@ public class BillboardController {
         try {
             billboardService.addBillboard(bill);
             return ResponseEntity.ok("se guardo");
-        } catch (Exception e) {
+        } catch (NoExiste e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("La sucursal no existe");
+        }catch (YaExiste e){
+            System.out.println("YA EXISTE LA BILL");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("La sucursal no existe");
+        }
+        catch (Exception e) {
+            System.out.println("EL problema es otro");
             return ResponseEntity.badRequest().build();
         }
     }
@@ -52,7 +60,6 @@ public class BillboardController {
             @RequestParam(required = false) Optional<String> format
     ) {
         try {
-            // Usamos orElse para asignar un valor predeterminado o null-safe
             Integer resolvedBranchId = branchId.orElse(null);
             String resolvedCategory = category.orElse(null);
             String resolvedLanguage = language.orElse(null);
@@ -60,7 +67,7 @@ public class BillboardController {
 
             List<Movie> filteredMovies = billboardService.getFilteredMovies(resolvedBranchId, resolvedCategory, resolvedLanguage, resolvedFormat);
             List<MovieDTO> movieDTOs = filteredMovies.stream()
-                    .map(movie -> new MovieDTO(movie.getTitle(), movie.getImageUrl(), movie.getGenre(), movie.getDescription(), movie.getDuration()))
+                    .map(movie -> new MovieDTO(movie.getTitle(), movie.getImageUrl(), movie.getGenre(), movie.getDescription(), movie.getDuration(), movie.getAge(), movie.getLanguage()))
                     .collect(Collectors.toList());
 
             return ResponseEntity.ok(movieDTOs);
@@ -75,10 +82,8 @@ public class BillboardController {
         try {
             Billboard billboard = billboardService.getBillboardByBranchId(id);
             List<Movie> movies = billboard.getMovies();
-
-            // Convertir a DTO para devolver solo los campos necesarios (título y URL)
             List<MovieDTO> movieDTOs = movies.stream()
-                    .map(movie -> new MovieDTO(movie.getTitle(), movie.getImageUrl(),movie.getGenre() ,movie.getDescription(), movie.getDuration()))
+                    .map(movie -> new MovieDTO(movie.getTitle(), movie.getImageUrl(),movie.getGenre() ,movie.getDescription(), movie.getDuration(), movie.getAge(), movie.getLanguage()))
                     .collect(Collectors.toList());
 
             return ResponseEntity.ok(movieDTOs);

@@ -5,10 +5,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
@@ -38,7 +38,9 @@ public class SecurityConfig implements WebMvcConfigurer {
                                 "/movies/add",
                                 "/branches/add",
                                 "/billboard/add",
-                                "/billboard/movies"
+                                "/billboard/movies",
+                                "/functions/add",
+                                "/functions/fun/{idbran}/{title}/{daymonth}"
                         ).permitAll() // Permite el acceso a estos endpoints sin autenticación
                         .requestMatchers("/movies/reserve").authenticated() // Requiere autenticación para reservar
                         .anyRequest().authenticated() // Todas las demás solicitudes requieren autenticación
@@ -47,6 +49,10 @@ public class SecurityConfig implements WebMvcConfigurer {
                         .sessionFixation(sessionFixation -> sessionFixation.migrateSession())
                         .maximumSessions(1)
                         .expiredUrl("/auth/login") // Redirigir al login si la sesión expira
+                        .maxSessionsPreventsLogin(true) // Evitar que un segundo login expulse al primer usuario
+                )
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(new Http403ForbiddenEntryPoint()) // Retorna 403 en caso de acceso no autorizado
                 );
 
         return http.build();
@@ -63,15 +69,6 @@ public class SecurityConfig implements WebMvcConfigurer {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config); // Aplica la configuración CORS a todas las rutas
         return source;
-    }
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("http://localhost:5173")
-                .allowedMethods("GET", "POST", "PUT", "DELETE")
-                .allowedHeaders("*")
-                .allowCredentials(true);
     }
 
     @Bean

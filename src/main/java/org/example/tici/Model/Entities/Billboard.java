@@ -3,19 +3,20 @@ package org.example.tici.Model.Entities;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
-import java.util.List;@Entity
+import java.util.List;
+@Entity
 @Table(name = "billboard")
 public class Billboard {
 
     @Id
-    //@Column(name = "id", nullable = false)
+    @Column(name = "id_bill", nullable = false)
     private int idBill;
 
     @ManyToOne
     @JoinColumn(name = "branch_id", nullable = false)
     private Branches branchId;
 
-    // Cambiar la lista de cadenas por una lista de entidades Movie
+
     @ManyToMany
     @JoinTable(
             name = "billboard_movies",
@@ -24,6 +25,7 @@ public class Billboard {
     )
     private List<Movie> movies;
 
+
     public Billboard(int idBill, Branches branchId) {
         this.idBill = idBill;
         this.branchId = branchId;
@@ -31,7 +33,10 @@ public class Billboard {
     }
 
     public Billboard() {
+        this.movies = new ArrayList<>();
     }
+
+
 
     public int getIdBill() {
         return idBill;

@@ -21,35 +21,31 @@ public class Function {
     @Column(name = "end_time", nullable = false)
     private LocalTime endTime;
 
-    @Column(name = "projection_room_number", nullable = false)
-    private int projectionRoomNumber;
-
-    @Column(name = "branch_id", nullable = false)
-    private int branchId;
 
     @ManyToOne
     @JoinColumn (name = "movie_title", nullable = false)
     private Movie movie;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "projection_room_number", insertable = false, updatable = false)
+    @ManyToOne
+    @JoinColumn(name = "projection_room_number", nullable = false)
     private ProjectionRoom projectionRoom;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "branch_id",insertable = false, updatable = false)
-    private Branches branches;
+    @ManyToOne
+    @JoinColumn(name = "branch_id", nullable = false)
+    private Branches branchId;
 
     public Function(){
 
     }
     public Function(int idFun, int date,LocalTime startTime,
-                    LocalTime endTime,ProjectionRoom projectionRoom, Movie movieTitle ){
+                    LocalTime endTime,ProjectionRoom projectionRoom, Movie movieTitle, Branches branchId ){
         this.idFun=idFun;
         this.dayMonth=date;
         this.startTime = startTime;
         this.endTime = endTime;
         this.projectionRoom = projectionRoom;
         this.movie = movieTitle;
+        this.branchId = branchId;
     }
 
     public int getIdFun() {
@@ -98,5 +94,27 @@ public class Function {
 
     public void setMovie_id(Movie movie_title) {
         this.movie = movie_title;
+    }
+
+    public int getDayMonth() {
+        return dayMonth;
+    }
+
+    public void setDayMonth(int dayMonth) {
+        this.dayMonth = dayMonth;
+    }
+
+
+    public void setBranchId(Branches branchId) {
+        this.branchId = branchId;
+    }
+
+
+    public void setMovie(Movie movie) {
+        this.movie = movie;
+    }
+
+    public Branches getBranchId() {
+        return branchId;
     }
 }

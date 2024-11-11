@@ -73,5 +73,4 @@ public class ProjectionRoom {
         this.branchId = branchId;
     }
 
-
 }
