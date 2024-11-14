@@ -29,10 +29,12 @@ public class BookingService {
 
         Function functionOptional = functionOptionalOpt.get();
 
+
         List<SeatBook> reservedSeats = seatsRepository.findByFunctionAndSeatNumberIn(functionOptional, seatsToReserve);
         if (!reservedSeats.isEmpty()) {
             return false;
         }
+
 
         Booking booking = new Booking();
         booking.setBranchId(functionOptional.getProjectionRoom().getBranch());
@@ -42,10 +44,15 @@ public class BookingService {
         booking.setUserId(user);
         booking = bookingRepository.save(booking);
 
+
         final Booking finalBooking = booking;
 
         seatsToReserve.forEach(seatNumber -> {
             SeatBook seat = new SeatBook();
+
+
+
+
 
             SeatBookId seatBookId = new SeatBookId(
                     seatNumber,
@@ -57,6 +64,8 @@ public class BookingService {
                     functionOptional.getProjectionRoom().getBranch().getIdBran()
             );
 
+
+
             seat.setSeatNumber(seatNumber);
             seat.setBooking(finalBooking);
             seat.setUser(user);
@@ -64,7 +73,6 @@ public class BookingService {
             seat.setMovie(functionOptional.getMovie());
             seat.setProjectionRoom(functionOptional.getProjectionRoom());
             seat.setBranch(functionOptional.getProjectionRoom().getBranch());
-
             seatsRepository.save(seat);
         });
 

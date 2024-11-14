@@ -18,9 +18,11 @@ public class BookingRequest {
         return seatsNumberToReserve;
     }
 
+
     public void setSeatsNumberToReserve(List<Integer> seatsNumberToReserve) {
         this.seatsNumberToReserve = seatsNumberToReserve;
     }
+
 
     public int getFunctionId() {
         return functionId;
