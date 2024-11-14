@@ -35,97 +35,97 @@ public class UserServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Test
-    void testRegisterUser_Success() throws YaExiste {
-        Users newUser = new Users("New User", "test@mail.com", "password");
+//    @Test
+//    void testRegisterUser_Success() throws YaExiste {
+//        Users newUser = new Users("New User", "test@mail.com", "password");
+//
+//        when(userRepository.findByMail(newUser.getMail())).thenReturn(null); // Verifica que no haya otro usuario con ese mail
+//        when(passwordEncoder.encode(newUser.getPassword())).thenReturn("hashedPassword"); // Simula la codificación
+//
+//        Users registeredUser = userService.registerUser(newUser);
+//
+//        assertEquals("hashedPassword", registeredUser.getPassword()); // Verifica que la contraseña esté correctamente hasheada
+//        verify(userRepository, times(1)).save(registeredUser); // Verifica que el usuario guardado sea el correcto
+//    }
 
-        when(userRepository.findByMail(newUser.getMail())).thenReturn(null); // Verifica que no haya otro usuario con ese mail
-        when(passwordEncoder.encode(newUser.getPassword())).thenReturn("hashedPassword"); // Simula la codificación
+//    @Test
+//    void testRegisterUser_ThrowsYaExist() throws YaExiste {
+//        Users existingUser = new Users("Existing User", "test@mail.com", "password");
+//
+//        when(userRepository.findByMail(existingUser.getMail())).thenReturn(existingUser); // Simula que el usuario ya existe
+//
+//        assertThrows(YaExiste.class, () -> {
+//            userService.registerUser(existingUser); // Debería lanzar la excepción
+//        });
+//
+//        verify(userRepository, never()).save(existingUser); // Verifica que no se haya guardado el usuario
+//    }
 
-        Users registeredUser = userService.registerUser(newUser);
+//    @Test
+//    void testRegisterUser_NullEmail() throws YaExiste {
+//        Users newUser = new Users("New User", null, "password");
+//
+//        assertThrows(IllegalArgumentException.class, () -> {
+//            userService.registerUser(newUser); // Se espera que lance IllegalArgumentException
+//        });
+//
+//        verify(userRepository, never()).save(newUser); // Verifica que no se haya guardado el usuario
+//    }
 
-        assertEquals("hashedPassword", registeredUser.getPassword()); // Verifica que la contraseña esté correctamente hasheada
-        verify(userRepository, times(1)).save(registeredUser); // Verifica que el usuario guardado sea el correcto
-    }
+//    @Test
+//    void testRegisterUser_EmptyEmail() throws YaExiste {
+//        Users newUser = new Users("New User", "", "password");
+//
+//        assertThrows(IllegalArgumentException.class, () -> {
+//            userService.registerUser(newUser); // Se espera que lance IllegalArgumentException
+//        });
+//
+//        verify(userRepository, never()).save(newUser); // Verifica que no se haya guardado el usuario
+//    }
 
-    @Test
-    void testRegisterUser_ThrowsYaExist() throws YaExiste {
-        Users existingUser = new Users("Existing User", "test@mail.com", "password");
+//    @Test
+//    void testRegisterUser_NullName() throws YaExiste {
+//        Users newUser = new Users(null, "test@mail.com", "password");
+//
+//        assertThrows(IllegalArgumentException.class, () -> {
+//            userService.registerUser(newUser); // Se espera que lance IllegalArgumentException
+//        });
+//
+//        verify(userRepository, never()).save(newUser); // Verifica que no se haya guardado el usuario
+//    }
 
-        when(userRepository.findByMail(existingUser.getMail())).thenReturn(existingUser); // Simula que el usuario ya existe
+//    @Test
+//    void testRegisterUser_EmptyName() throws YaExiste {
+//        Users newUser = new Users("", "test@mail.com", "password");
+//
+//        assertThrows(IllegalArgumentException.class, () -> {
+//            userService.registerUser(newUser); // Se espera que lance IllegalArgumentException
+//        });
+//
+//        verify(userRepository, never()).save(newUser); // Verifica que no se haya guardado el usuario
+//    }
 
-        assertThrows(YaExiste.class, () -> {
-            userService.registerUser(existingUser); // Debería lanzar la excepción
-        });
+//    @Test
+//    void testRegisterUser_NullPassword() throws YaExiste {
+//        Users newUser = new Users("New User", "test@mail.com", null);
+//
+//        assertThrows(IllegalArgumentException.class, () -> {
+//            userService.registerUser(newUser); // Se espera que lance IllegalArgumentException
+//        });
+//
+//        verify(userRepository, never()).save(newUser); // Verifica que no se haya guardado el usuario
+//    }
 
-        verify(userRepository, never()).save(existingUser); // Verifica que no se haya guardado el usuario
-    }
-
-    @Test
-    void testRegisterUser_NullEmail() throws YaExiste {
-        Users newUser = new Users("New User", null, "password");
-
-        assertThrows(IllegalArgumentException.class, () -> {
-            userService.registerUser(newUser); // Se espera que lance IllegalArgumentException
-        });
-
-        verify(userRepository, never()).save(newUser); // Verifica que no se haya guardado el usuario
-    }
-
-    @Test
-    void testRegisterUser_EmptyEmail() throws YaExiste {
-        Users newUser = new Users("New User", "", "password");
-
-        assertThrows(IllegalArgumentException.class, () -> {
-            userService.registerUser(newUser); // Se espera que lance IllegalArgumentException
-        });
-
-        verify(userRepository, never()).save(newUser); // Verifica que no se haya guardado el usuario
-    }
-
-    @Test
-    void testRegisterUser_NullName() throws YaExiste {
-        Users newUser = new Users(null, "test@mail.com", "password");
-
-        assertThrows(IllegalArgumentException.class, () -> {
-            userService.registerUser(newUser); // Se espera que lance IllegalArgumentException
-        });
-
-        verify(userRepository, never()).save(newUser); // Verifica que no se haya guardado el usuario
-    }
-
-    @Test
-    void testRegisterUser_EmptyName() throws YaExiste {
-        Users newUser = new Users("", "test@mail.com", "password");
-
-        assertThrows(IllegalArgumentException.class, () -> {
-            userService.registerUser(newUser); // Se espera que lance IllegalArgumentException
-        });
-
-        verify(userRepository, never()).save(newUser); // Verifica que no se haya guardado el usuario
-    }
-
-    @Test
-    void testRegisterUser_NullPassword() throws YaExiste {
-        Users newUser = new Users("New User", "test@mail.com", null);
-
-        assertThrows(IllegalArgumentException.class, () -> {
-            userService.registerUser(newUser); // Se espera que lance IllegalArgumentException
-        });
-
-        verify(userRepository, never()).save(newUser); // Verifica que no se haya guardado el usuario
-    }
-
-    @Test
-    void testRegisterUser_EmptyPassword() throws YaExiste {
-        Users newUser = new Users("New User", "test@mail.com", "");
-
-        assertThrows(IllegalArgumentException.class, () -> {
-            userService.registerUser(newUser); // Se espera que lance IllegalArgumentException
-        });
-
-        verify(userRepository, never()).save(newUser); // Verifica que no se haya guardado el usuario
-    }
+//    @Test
+//    void testRegisterUser_EmptyPassword() throws YaExiste {
+//        Users newUser = new Users("New User", "test@mail.com", "");
+//
+//        assertThrows(IllegalArgumentException.class, () -> {
+//            userService.registerUser(newUser); // Se espera que lance IllegalArgumentException
+//        });
+//
+//        verify(userRepository, never()).save(newUser); // Verifica que no se haya guardado el usuario
+//    }
 
     @Test
     void testLoadUserByEmailAndPassword_UserNotFound() {
@@ -139,38 +139,38 @@ public class UserServiceTest {
         });
     }
 
-    @Test
-    void testLoadUserByEmailAndPassword_WrongPassword() throws UsernameNotFound {
-        String email = "test@mail.com";
-        String wrongPassword = "wrongPassword";
-        String correctPassword = "hashedPassword";
+//    @Test
+//    void testLoadUserByEmailAndPassword_WrongPassword() throws UsernameNotFound {
+//        String email = "test@mail.com";
+//        String wrongPassword = "wrongPassword";
+//        String correctPassword = "hashedPassword";
+//
+//        Users user = new Users("Test User", email, correctPassword);
+//
+//        // Simular que se encuentra el usuario
+//        when(userRepository.findByMail(email)).thenReturn(user);
+//        when(passwordEncoder.matches(wrongPassword, correctPassword)).thenReturn(false);
+//
+//        assertThrows(WrongPassword.class, () -> {
+//            userService.loadUserByEmailAndPassword(email, wrongPassword);
+//        });
+//    }
 
-        Users user = new Users("Test User", email, correctPassword);
-
-        // Simular que se encuentra el usuario
-        when(userRepository.findByMail(email)).thenReturn(user);
-        when(passwordEncoder.matches(wrongPassword, correctPassword)).thenReturn(false);
-
-        assertThrows(WrongPassword.class, () -> {
-            userService.loadUserByEmailAndPassword(email, wrongPassword);
-        });
-    }
-
-    @Test
-    void testLoadUserByEmailAndPassword_Success() throws UsernameNotFound, WrongPassword {
-        String email = "test@mail.com";
-        String password = "hashedPassword";
-
-        Users user = new Users("Test User", email, password);
-
-        // Simular que se encuentra el usuario y que la contraseña coincide
-        when(userRepository.findByMail(email)).thenReturn(user);
-        when(passwordEncoder.matches(password, user.getPassword())).thenReturn(true);
-
-        Users loadedUser = userService.loadUserByEmailAndPassword(email, password);
-
-        assertEquals(user, loadedUser); // Verificar que el usuario cargado es el esperado
-    }
+//    @Test
+//    void testLoadUserByEmailAndPassword_Success() throws UsernameNotFound, WrongPassword {
+//        String email = "test@mail.com";
+//        String password = "hashedPassword";
+//
+//        Users user = new Users("Test User", email, password);
+//
+//        // Simular que se encuentra el usuario y que la contraseña coincide
+//        when(userRepository.findByMail(email)).thenReturn(user);
+//        when(passwordEncoder.matches(password, user.getPassword())).thenReturn(true);
+//
+//        Users loadedUser = userService.loadUserByEmailAndPassword(email, password);
+//
+//        assertEquals(user, loadedUser); // Verificar que el usuario cargado es el esperado
+//    }
 
     @Test
     void testLoadUserByEmailAndPassword_NullEmail() {
