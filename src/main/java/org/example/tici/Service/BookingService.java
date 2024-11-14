@@ -22,7 +22,6 @@ public class BookingService {
     private FunctionRepository functionRepository;
 
     public boolean bookSeat(int functionId, Users user, List<Integer> seatsToReserve) {
-        // Fetch the function and handle absence gracefully
         Optional<Function> functionOptionalOpt = Optional.ofNullable(functionRepository.findByIdFun(functionId));
         if (functionOptionalOpt.isEmpty()) {
             return false;
@@ -30,29 +29,24 @@ public class BookingService {
 
         Function functionOptional = functionOptionalOpt.get();
 
-        // Check if any of the seats are already reserved
         List<SeatBook> reservedSeats = seatsRepository.findByFunctionAndSeatNumberIn(functionOptional, seatsToReserve);
         if (!reservedSeats.isEmpty()) {
             return false;
         }
 
-        // Create a new booking
         Booking booking = new Booking();
         booking.setBranchId(functionOptional.getProjectionRoom().getBranch());
         booking.setFunction(functionOptional);
         booking.setMovieTitle(functionOptional.getMovie());
         booking.setProjectionRoom(functionOptional.getProjectionRoom());
         booking.setUserId(user);
-        booking = bookingRepository.save(booking);  // Save and get the booking ID
+        booking = bookingRepository.save(booking);
 
-        // Final reference to booking for use in lambda
         final Booking finalBooking = booking;
 
-        // Reserve each seat
         seatsToReserve.forEach(seatNumber -> {
             SeatBook seat = new SeatBook();
 
-            // Create a composite ID for the seat booking
             SeatBookId seatBookId = new SeatBookId(
                     seatNumber,
                     finalBooking.getBookingId(),
@@ -63,7 +57,6 @@ public class BookingService {
                     functionOptional.getProjectionRoom().getBranch().getIdBran()
             );
 
-            // Set properties for the seat booking
             seat.setSeatNumber(seatNumber);
             seat.setBooking(finalBooking);
             seat.setUser(user);
@@ -72,7 +65,6 @@ public class BookingService {
             seat.setProjectionRoom(functionOptional.getProjectionRoom());
             seat.setBranch(functionOptional.getProjectionRoom().getBranch());
 
-            // Save the seat booking
             seatsRepository.save(seat);
         });
 

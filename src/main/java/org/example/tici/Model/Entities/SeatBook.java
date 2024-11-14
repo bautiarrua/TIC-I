@@ -98,4 +98,5 @@ public class SeatBook implements Serializable {
     public void setBranch(Branches branch) {
         this.branch = branch;
     }
+
 }
