@@ -12,6 +12,10 @@ public class BranchesService {
     private BranchesRepository branchesRepository;
 
     public Branches addBran(Branches branch) throws YaExiste{
+        if (branch == null) {
+            throw new IllegalArgumentException("La sucursal no puede ser nula");
+        }
+
         if(branchesRepository.findByIdBran(branch.getIdBran()) != null){
             throw new YaExiste();
         }

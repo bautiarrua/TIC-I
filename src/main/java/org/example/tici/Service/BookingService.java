@@ -86,7 +86,7 @@ public class BookingService {
             Booking booking = bookingOptional.get();
 
             List<SeatBook> seatsToBeCancelled = seatsRepository.findByBookingAndSeatNumberIn(booking, seatsToCancel);
-            if (seatsToCancel.isEmpty()) {
+            if (seatsToBeCancelled.isEmpty()) {
                 return false;
             }
             seatsRepository.deleteAll(seatsToBeCancelled);
