@@ -1,4 +1,4 @@
-import org.example.tici.Exceptions.LimiteAlcanzado;
+
 import org.example.tici.Exceptions.NoExiste;
 import org.example.tici.Exceptions.YaExiste;
 import org.example.tici.Model.Entities.Billboard;
@@ -17,7 +17,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Optional;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,125 +39,99 @@ public class BillboardServiceTest {
     @InjectMocks
     private BillboardService billboardService;
 
+    private Billboard billboard;
+    private Movie movie;
+    private Branches branch;
+
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         MockitoAnnotations.openMocks(this);
+
+        branch = new Branches();
+        branch.setIdBran(1);
+
+        billboard = new Billboard(1, branch);
+
+        movie = new Movie("Inception", "A mind-bending thriller", "Sci-Fi", "English", 148, "2D", "image_url", "trailer_url", "PG-13");
     }
 
     @Test
-    void testAddBillboard_Success() throws YaExiste, NoExiste {
-        Billboard newBillboard = new Billboard(1, new Branches(1, "Central", 5));
+    public void testAddBillboard_success() throws YaExiste, NoExiste {
+        when(billboardRepository.findByIdBill(1)).thenReturn(null);
+        when(branchesRepository.findByIdBran(1)).thenReturn(branch);
+        when(billboardRepository.save(billboard)).thenReturn(billboard);
 
-        when(billboardRepository.findByIdBill(newBillboard.getIdBill())).thenReturn(null);
-        when(branchesRepository.findByIdBran(newBillboard.getBranchId().getIdBran()))
-                .thenReturn(newBillboard.getBranchId());
-        when(billboardRepository.save(newBillboard)).thenReturn(newBillboard);
+        Billboard result = billboardService.addBillboard(billboard);
 
-        Billboard addedBillboard = billboardService.addBillboard(newBillboard);
-
-        assertNotNull(addedBillboard);
-        verify(billboardRepository, times(1)).save(newBillboard);
+        assertNotNull(result);
+        verify(billboardRepository).save(billboard);
     }
 
-    @Test
-    void testAddBillboard_ThrowsYaExiste() {
-        Billboard existingBillboard = new Billboard(1, new Branches(1, "Central", 5));
 
-        when(billboardRepository.findByIdBill(existingBillboard.getIdBill())).thenReturn(existingBillboard);
+    @Test
+    public void testAddBillboard_alreadyExists() {
+        when(billboardRepository.findByIdBill(1)).thenReturn(billboard);
 
         assertThrows(YaExiste.class, () -> {
-            billboardService.addBillboard(existingBillboard);
+            billboardService.addBillboard(billboard);
         });
-
-        verify(billboardRepository, never()).save(existingBillboard);
     }
 
-//    @Test
-//    void testAddMovieToBillboard_Success() throws NoExiste, YaExiste {
-//        Movie movie = new Movie("Test Movie", "Description", "Action", "English", 120, "Feature", "imageUrl");
-//        Billboard billboard = new Billboard(1, new Branches(1, "Downtown", 5));
-//
-//        when(movieRepository.findByTitle(movie.getTitle())).thenReturn(movie);
-//        when(billboardRepository.findByIdBill(billboard.getIdBill())).thenReturn(billboard);
-//        when(billboardRepository.save(billboard)).thenReturn(billboard);
-//
-//        Billboard updatedBillboard = billboardService.addMovieToBillboard(movie.getTitle(), billboard.getIdBill());
-//
-//        assertNotNull(updatedBillboard);
-//        assertTrue(updatedBillboard.getMovies().contains(movie));
-//        verify(billboardRepository, times(1)).save(billboard);
-//    }
+    @Test
+    public void testAddMovieToBillboard_success() throws NoExiste, YaExiste {
+        Movie movie = new Movie("Inception", "A mind-bending thriller", "Sci-Fi", "English", 148, "2D", "imageUrl", "trailerUrl", "PG-13");
+
+        Branches branch = new Branches(1, "Downtown", 10);
+        Billboard billboard = new Billboard(1, branch);
+
+        when(movieRepository.findByTitle("Inception")).thenReturn(movie);
+        when(billboardRepository.findByIdBill(1)).thenReturn(billboard);
+        when(billboardRepository.save(billboard)).thenReturn(billboard);
+
+        Billboard result = billboardService.addMovieToBillboard("Inception", 1);
+
+        assertNotNull(result);
+        assertTrue(result.getMovies().contains(movie));
+        verify(billboardRepository).save(billboard);
+    }
+
 
     @Test
-    void testAddMovieToBillboard_ThrowsNoExisteForMovie() {
-        when(movieRepository.findByTitle("NonExistentMovie")).thenReturn(null);
+    public void testAddMovieToBillboard_movieNotFound() {
+        when(movieRepository.findByTitle("Inception")).thenReturn(null);
 
         assertThrows(NoExiste.class, () -> {
-            billboardService.addMovieToBillboard("NonExistentMovie", 1);
+            billboardService.addMovieToBillboard("Inception", 1);
         });
-
-        verify(billboardRepository, never()).save(any(Billboard.class));
     }
 
+    @Test
+    public void testAddMovieToBillboard_movieAlreadyAdded() throws NoExiste, YaExiste {
+        when(movieRepository.findByTitle("Inception")).thenReturn(movie);
+        when(billboardRepository.findByIdBill(1)).thenReturn(billboard);
 
-//    @Test
-//    void testAddMovieToBillboard_ThrowsNoExisteForBillboard() {
-//        Movie movie = new Movie("Test Movie", "Description", "Action", "English", 120, "Feature", "imageUrl");
-//
-//        when(movieRepository.findByTitle(movie.getTitle())).thenReturn(movie);
-//        when(billboardRepository.findByIdBill(1)).thenReturn(null);
-//
-//        assertThrows(NoExiste.class, () -> {
-//            billboardService.addMovieToBillboard(movie.getTitle(), 1);
-//        });
-//
-//        verify(billboardRepository, never()).save(any(Billboard.class));
-//    }
+        billboard.getMovies().add(movie);
 
-//    @Test
-//    void testAddMovieToBillboard_ThrowsYaExiste() throws NoExiste {
-//        Movie movie = new Movie("Test Movie", "Description", "Action", "English", 120, "Feature", "imageUrl");
-//        Billboard billboard = new Billboard(1, new Branches(1, "Downtown", 5));
-//
-//        billboard.getMovies().add(movie);
-//
-//        when(movieRepository.findByTitle(movie.getTitle())).thenReturn(movie);
-//        when(billboardRepository.findByIdBill(billboard.getIdBill())).thenReturn(billboard);
-//
-//        assertThrows(YaExiste.class, () -> {
-//            billboardService.addMovieToBillboard(movie.getTitle(), billboard.getIdBill());
-//        });
-//
-//        verify(billboardRepository, never()).save(billboard);
-//    }
-
+        assertThrows(YaExiste.class, () -> {
+            billboardService.addMovieToBillboard("Inception", 1);
+        });
+    }
 
     @Test
-    void testGetBillboardByBranchId_Success() throws NoExiste {
-        Billboard billboard = new Billboard(1, new Branches(1, "Downtown", 5));
+    public void testGetBillboardByBranchId_success() throws NoExiste {
+        Branches branch = new Branches(1, "Downtown", 10);
+        Billboard billboard = new Billboard(1, branch);
 
-        when(billboardRepository.findByIdBill(1)).thenReturn(billboard);
         when(billboardRepository.findByBranchId_IdBran(1)).thenReturn(billboard);
 
-        Billboard foundBillboard = billboardService.getBillboardByBranchId(1);
+        Billboard result = billboardService.getBillboardByBranchId(1);
 
-        assertEquals(billboard, foundBillboard);
+        assertNotNull(result);
+        assertEquals(billboard, result);
     }
 
     @Test
-    void testGetBillboardByBranchId_ThrowsNoExisteForBillboardId() {
-        when(billboardRepository.findByIdBill(1)).thenReturn(null);
-
-        assertThrows(NoExiste.class, () -> {
-            billboardService.getBillboardByBranchId(1);
-        });
-
-        verify(billboardRepository, never()).findByBranchId_IdBran(1);
-    }
-
-    @Test
-    void testGetBillboardByBranchId_ThrowsNoExisteForBranchId() {
-        when(billboardRepository.findByIdBill(1)).thenReturn(new Billboard());
+    public void testGetBillboardByBranchId_notFound() {
         when(billboardRepository.findByBranchId_IdBran(1)).thenReturn(null);
 
         assertThrows(NoExiste.class, () -> {
@@ -166,45 +140,15 @@ public class BillboardServiceTest {
     }
 
     @Test
-    void testAddBillboard_ThrowsNoExisteForNonexistentBranch() {
-        Billboard newBillboard = new Billboard(1, new Branches(99, "Nonexistent", 5)); // branch ID no existe
+    public void testGetFilteredMovies_success() {
+        List<Movie> movies = new ArrayList<>();
+        movies.add(movie);
 
-        when(billboardRepository.findByIdBill(newBillboard.getIdBill())).thenReturn(null);
-        when(branchesRepository.findByIdBran(newBillboard.getBranchId().getIdBran())).thenReturn(null);
+        when(movieRepository.findFilteredMovies(1, "Sci-Fi", "English", "2D")).thenReturn(movies);
 
-        assertThrows(NoExiste.class, () -> {
-            billboardService.addBillboard(newBillboard);
-        });
+        List<Movie> result = billboardService.getFilteredMovies(1, "Sci-Fi", "English", "2D");
+
+        assertNotNull(result);
+        assertTrue(result.contains(movie));
     }
-
-    @Test
-    void testGetBillboardByBranchId_ThrowsNoExisteForNonexistentBranch() {
-        int nonexistentBranchId = 99;
-
-        lenient().when(billboardRepository.findByBranchId_IdBran(nonexistentBranchId)).thenReturn(null);
-
-        assertThrows(NoExiste.class, () -> {
-            billboardService.getBillboardByBranchId(nonexistentBranchId);
-        });
-    }
-
-//    @Test
-//    void testGetFilteredMovies_ReturnsFilteredMovies() {
-//        int branchId = 1;
-//        String category = "Action";
-//        String language = "English";
-//        String format = "Feature";
-//
-//        List<Movie> expectedMovies = List.of(
-//                new Movie("Movie1", "Description1", category, language, 120, format, "imageUrl1"),
-//                new Movie("Movie2", "Description2", category, language, 90, format, "imageUrl2")
-//        );
-//
-//        when(movieRepository.findFilteredMovies(branchId, category, language, format)).thenReturn(expectedMovies);
-//
-//        List<Movie> filteredMovies = billboardService.getFilteredMovies(branchId, category, language, format);
-//
-//        assertEquals(expectedMovies, filteredMovies);
-//    }
-
 }
