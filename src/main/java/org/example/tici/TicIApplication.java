@@ -9,7 +9,7 @@ public class TicIApplication {
 
     public static void main(String[] args) {
         // Cargar el archivo .env
-        Dotenv dotenv = Dotenv.load();
+        Dotenv dotenv = Dotenv.configure().load();
 
         // Inicia la aplicación
         SpringApplication.run(TicIApplication.class, args);
