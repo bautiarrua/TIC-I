@@ -99,5 +99,9 @@ public class BookingService {
         return false;
     }
 
+    public List<Booking> getBookingsByUserMail(String mail) {
+        return bookingRepository.findBookingsByUserMail(mail);
+    }
+
 
 }

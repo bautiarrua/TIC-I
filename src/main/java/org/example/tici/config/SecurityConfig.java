@@ -49,7 +49,9 @@ public class SecurityConfig {
                                 "/billboard/movies",
                                 "/functions/add",
                                 "/functions/fun/{idbran}/{title}/{daymonth}",
-                                "/seats/reserved/fun/{functionId}"
+                                "/seats/reserved/fun/{functionId}",
+                                "/room/add",
+                                "/movies/user/{mail}"
                         ).permitAll()
                         .requestMatchers("/movies/reserve", "/movies/cancelReserve").authenticated()
                         .anyRequest().authenticated()

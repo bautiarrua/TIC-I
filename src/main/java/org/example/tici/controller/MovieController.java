@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import org.apache.catalina.User;
 import org.example.tici.DTO.BookingRequest;
 import org.example.tici.DTO.CancelRequest;
+import org.example.tici.Model.Entities.Booking;
 import org.example.tici.Model.Entities.Movie;
 import org.example.tici.Model.Entities.Users;
 import org.example.tici.Repository.UserRepository;
@@ -107,4 +108,8 @@ public class MovieController {
         }
     }
 
+    @GetMapping("/user/{mail}")
+    public List<Booking> getBookingsByUserMail(@PathVariable("mail") String mail) {
+        return bookingService.getBookingsByUserMail(mail);
+    }
 }
