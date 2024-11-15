@@ -9,9 +9,15 @@ import org.example.tici.Repository.SeatsRepository;
 import org.example.tici.Service.BookingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
+
 import java.util.*;
 
+@SpringBootTest(classes = MainPrueba.class)
+@ExtendWith(MockitoExtension.class)
 public class BookingServiceTest {
 
     @Mock
@@ -41,7 +47,7 @@ public class BookingServiceTest {
         user = new Users();
         user.setIdUs(1);
 
-        movie = new Movie("La Invitada", "Una joven huérfana es adoptada por la madre de su única amiga, y ambas se mudan juntas a la casa del lago donde vive la mujer desde que se divorció. Allí, despertará un antiguo culto pagano que verá a Ana como su única opción para proteger el lugar.", "Terror", "Español", 85, "2D", "https://movieprodportalstoweb.blob.core.windows.net/movieposters/lainvitada.jpg", "https://www.youtube.com/watch?v=qadegIcxaCQ", "+15");
+        movie = new Movie("La Invitada", "descripcion", "Terror", "Español", 85, "2D", "https://movieprodportalstoweb.blob.core.windows.net/movieposters/lainvitada.jpg", "https://www.youtube.com/watch?v=qadegIcxaCQ", "+15");
 
         projectionRoom = new ProjectionRoom();
         projectionRoom.setRoomNumber(1);

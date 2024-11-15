@@ -9,10 +9,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+@SpringBootTest(classes = MainPrueba.class)
 @ExtendWith(MockitoExtension.class)
 class CustomUserDetailsServiceTest {
 
