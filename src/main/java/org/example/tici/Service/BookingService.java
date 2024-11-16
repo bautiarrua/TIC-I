@@ -112,7 +112,8 @@ public class BookingService {
                         booking.getMovieTitle().getTitle(), // Título de la película
                         booking.getSeats().stream()
                                 .map(seat -> seat.getSeatNumber()) // Asientos reservados
-                                .collect(Collectors.toList())
+                                .collect(Collectors.toList()),
+                        booking.getBookingId()
                 ))
                 .collect(Collectors.toList());
     }

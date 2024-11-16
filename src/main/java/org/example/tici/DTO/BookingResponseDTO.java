@@ -9,13 +9,16 @@ public class BookingResponseDTO {
     private LocalTime endTime; // Hora de fin
     private String movieTitle; // Título de la película
     private List<Integer> seats; // Lista de asientos reservados
+    private int functionId;
 
-    public BookingResponseDTO(String branchNeighborhood, LocalTime startTime, LocalTime endTime, String movieTitle, List<Integer> seats) {
+    public BookingResponseDTO(String branchNeighborhood, LocalTime startTime,
+                              LocalTime endTime, String movieTitle, List<Integer> seats, int functionId) {
         this.branchNeighborhood = branchNeighborhood;
         this.startTime = startTime;
         this.endTime = endTime;
         this.movieTitle = movieTitle;
         this.seats = seats;
+        this.functionId = functionId;
     }
 
     public String getBranchNeighborhood() {
@@ -56,5 +59,13 @@ public class BookingResponseDTO {
 
     public void setSeats(List<Integer> seats) {
         this.seats = seats;
+    }
+
+    public int getFunctionId() {
+        return functionId;
+    }
+
+    public void setFunctionId(int functionId) {
+        this.functionId = functionId;
     }
 }
