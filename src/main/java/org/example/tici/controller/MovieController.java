@@ -3,6 +3,7 @@ package org.example.tici.controller;
 import jakarta.servlet.http.HttpSession;
 import org.apache.catalina.User;
 import org.example.tici.DTO.BookingRequest;
+import org.example.tici.DTO.BookingResponseDTO;
 import org.example.tici.DTO.CancelRequest;
 import org.example.tici.Model.Entities.Booking;
 import org.example.tici.Model.Entities.Movie;
@@ -41,6 +42,8 @@ public class MovieController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    //tendrian que ir en un billboard pero los pusimos aca
     @PostMapping("/reserve")
     public ResponseEntity<String> reserveMovie(@RequestBody BookingRequest bookingRequest, @RequestHeader("Authorization") String token) {
         if (token == null || !token.startsWith("Bearer ")) {
@@ -109,7 +112,7 @@ public class MovieController {
     }
 
     @GetMapping("/user/{mail}")
-    public List<Booking> getBookingsByUserMail(@PathVariable("mail") String mail) {
+    public List<BookingResponseDTO> getBookingsByUserMail(@PathVariable("mail") String mail) {
         return bookingService.getBookingsByUserMail(mail);
     }
 }

@@ -1,6 +1,7 @@
 package org.example.tici.Service;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
+import org.example.tici.DTO.BookingResponseDTO;
 import org.example.tici.Model.Entities.*;
 
 import org.example.tici.Repository.BookingRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BookingService {
@@ -99,8 +101,20 @@ public class BookingService {
         return false;
     }
 
-    public List<Booking> getBookingsByUserMail(String mail) {
-        return bookingRepository.findBookingsByUserMail(mail);
+    public List<BookingResponseDTO> getBookingsByUserMail(String mail) {
+        List<Booking> bookings = bookingRepository.findByUserEmail(mail);
+
+        return bookings.stream()
+                .map(booking -> new BookingResponseDTO(
+                        booking.getBranchId().getNeighborhood(), // Barrio del cine
+                        booking.getFunction().getStartTime(), // Hora de inicio
+                        booking.getFunction().getEndTime(), // Hora de fin
+                        booking.getMovieTitle().getTitle(), // Título de la película
+                        booking.getSeats().stream()
+                                .map(seat -> seat.getSeatNumber()) // Asientos reservados
+                                .collect(Collectors.toList())
+                ))
+                .collect(Collectors.toList());
     }
 
 
