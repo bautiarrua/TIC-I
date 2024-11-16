@@ -31,7 +31,7 @@ class BranchesServiceTest {
 
     @BeforeEach
     void setUp() {
-        branch = new Branches(1, "Centro", 5); // Crea una instancia de Branches para las pruebas
+        branch = new Branches(1, "Centro", 5);
     }
 
     @Test
@@ -80,6 +80,5 @@ class BranchesServiceTest {
         verify(branchesRepository, times(1)).findByIdBran(1);
         verify(branchesRepository, times(1)).save(branch);
     }
-
 
 }

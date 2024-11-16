@@ -1,63 +1,70 @@
+import org.example.tici.Service.*;
+
 import org.example.tici.Model.Entities.Function;
 import org.example.tici.Repository.SeatBookRepository;
-import org.example.tici.Service.SeatBookService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import org.mockito.ArgumentCaptor;
-import java.util.Collections;
+import static org.junit.jupiter.api.Assertions.*;
 
 
-@SpringBootTest(classes = MainPrueba.class)
-@ExtendWith(MockitoExtension.class)
-public class SeatBookServiceTest {
-
-    @InjectMocks
-    private SeatBookService seatBookService;
+class SeatBookServiceTest {
 
     @Mock
     private SeatBookRepository seatBookRepository;
 
-    @Mock
-    private Function function;
+    @InjectMocks
+    private SeatBookService seatBookService;
 
     @BeforeEach
     void setUp() {
+        MockitoAnnotations.openMocks(this);
     }
-
-//    @Test
-//    void testGetReservedSeatNumbersByFunction_ShouldReturnReservedSeats() {
-//        List<Integer> reservedSeats = Arrays.asList(1, 2, 3, 4, 5);
-//
-//        when(seatBookRepository.findReservedSeatNumbersByFunction(any(Function.class)))
-//                .thenReturn(reservedSeats);
-//
-//        List<Integer> result = seatBookService.getReservedSeatNumbersByFunction(function);
-//
-//        verify(seatBookRepository).findReservedSeatNumbersByFunction(function);
-//
-//        assertNotNull(result);
-//        assertEquals(5, result.size());
-//        assertTrue(result.containsAll(Arrays.asList(1, 2, 3, 4, 5)));
-//    }
 
     @Test
-    void testGetReservedSeatNumbersByFunction_WhenNoSeatsReserved_ShouldReturnEmptyList() {
-        lenient().when(seatBookRepository.findReservedSeatNumbersByFunction(function)).thenReturn(Collections.emptyList());
+    void getReservedSeatNumbersByFunction_ShouldReturnReservedSeats() {
 
-        List<Integer> result = seatBookService.getReservedSeatNumbersByFunction(function);
+        Function function = new Function();
+        List<Integer> expectedReservedSeats = Arrays.asList(1, 2, 3);
 
-        assertNotNull(result);
-        assertTrue(result.isEmpty());
+        when(seatBookRepository.findReservedSeatNumbersByFunction(function)).thenReturn(expectedReservedSeats);
+
+        List<Integer> reservedSeats = seatBookService.getReservedSeatNumbersByFunction(function);
+
+        assertNotNull(reservedSeats, "Reserved seats should not be null");
+        assertEquals(3, reservedSeats.size(), "The number of reserved seats should match");
+        assertTrue(reservedSeats.contains(1), "Reserved seats should contain seat number 1");
+        assertTrue(reservedSeats.contains(2), "Reserved seats should contain seat number 2");
+        assertTrue(reservedSeats.contains(3), "Reserved seats should contain seat number 3");
+
+        verify(seatBookRepository, times(1)).findReservedSeatNumbersByFunction(function);
+    }
+
+    @Test
+    void getReservedSeatNumbersByFunction_ShouldReturnEmptyList_WhenNoSeatsReserved() {
+        Function function = new Function();
+        List<Integer> expectedReservedSeats = Arrays.asList();
+
+        when(seatBookRepository.findReservedSeatNumbersByFunction(function)).thenReturn(expectedReservedSeats);
+
+
+        List<Integer> reservedSeats = seatBookService.getReservedSeatNumbersByFunction(function);
+
+
+        assertNotNull(reservedSeats, "Reserved seats should not be null");
+        assertTrue(reservedSeats.isEmpty(), "Reserved seats list should be empty");
+
+        verify(seatBookRepository, times(1)).findReservedSeatNumbersByFunction(function);
     }
 }
+

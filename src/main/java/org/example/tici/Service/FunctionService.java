@@ -37,25 +37,25 @@ public class FunctionService {
 
     public Function addFunction(FunctionDTO functionDTO) throws NoExiste {
          if(movieRepository.findByTitle(functionDTO.getMovieTitle()) == null|| functionDTO.getMovieTitle().isEmpty()) {
-             System.out.println("NO se encontro la pelicula");
+             System.out.println("Movie not found");
              throw new NoExiste();
          }
-         System.out.println("Encontro la pelicula");
+         System.out.println("Movie found");
          Movie movie = movieRepository.findByTitle(functionDTO.getMovieTitle());
 
          if(projectionRoomRepository.findByRoomNumber(functionDTO.getProjectionRoomNumber()) == null){
-             System.out.println("NO encontro el room");
+             System.out.println("Room not found");
              throw new NoExiste();
          }
-         System.out.println("Encontro el Room");
+         System.out.println("Room found");
 
         ProjectionRoom projectionRoom = projectionRoomRepository.findByRoomNumber(functionDTO.getProjectionRoomNumber());
-        System.out.println("numero del room " + projectionRoom.getRoomNumber());
+        System.out.println("room number" + projectionRoom.getRoomNumber());
         if(branchesRepository.findByIdBran(functionDTO.getBranchId()) == null){
-            System.out.println("NO se encontro la branch");
+            System.out.println("Branch not found");
             throw new NoExiste();
         }
-        System.out.println("Encontro la branch");
+        System.out.println("Branch found");
 
         Branches branches = branchesRepository.findByIdBran(functionDTO.getBranchId());
         Function function = new Function(functionDTO.getIdfun(), functionDTO.getDayMonth(),
