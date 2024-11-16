@@ -69,10 +69,10 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:5173")); // Origen permitido
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE")); // Métodos HTTP permitidos
-        config.setAllowedHeaders(List.of("*")); // Permitir todos los headers
-        config.setAllowCredentials(true); // Permitir credenciales
+        config.setAllowedOrigins(List.of("http://localhost:5173", "https://frontendtic.onrender.com"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+        config.setAllowedHeaders(List.of("*"));
+        config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config); // Aplica la configuración CORS a todas las rutas
