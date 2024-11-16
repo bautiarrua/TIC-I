@@ -42,7 +42,7 @@ public class BookingServiceTest {
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.openMocks(this);  // Inicia los mocks
+        MockitoAnnotations.openMocks(this);
 
         user = new Users();
         user.setIdUs(1);

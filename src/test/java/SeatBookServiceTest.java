@@ -4,15 +4,19 @@ import org.example.tici.Model.Entities.Function;
 import org.example.tici.Repository.SeatBookRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
+
 
 class SeatBookServiceTest {
 
@@ -48,7 +52,6 @@ class SeatBookServiceTest {
 
     @Test
     void getReservedSeatNumbersByFunction_ShouldReturnEmptyList_WhenNoSeatsReserved() {
-        // Arrange
         Function function = new Function();
         List<Integer> expectedReservedSeats = Arrays.asList();
 

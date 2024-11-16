@@ -18,8 +18,10 @@ import java.util.stream.Collectors;
 public class BookingService {
     @Autowired
     private SeatsRepository seatsRepository;
+
     @Autowired
     private BookingRepository bookingRepository;
+
     @Autowired
     private FunctionRepository functionRepository;
 
@@ -37,7 +39,6 @@ public class BookingService {
             return false;
         }
 
-
         Booking booking = new Booking();
         booking.setBranchId(functionOptional.getProjectionRoom().getBranch());
         booking.setFunction(functionOptional);
@@ -52,10 +53,6 @@ public class BookingService {
         seatsToReserve.forEach(seatNumber -> {
             SeatBook seat = new SeatBook();
 
-
-
-
-
             SeatBookId seatBookId = new SeatBookId(
                     seatNumber,
                     finalBooking.getBookingId(),
@@ -65,8 +62,6 @@ public class BookingService {
                     functionOptional.getProjectionRoom().getRoomNumber(),
                     functionOptional.getProjectionRoom().getBranch().getIdBran()
             );
-
-
 
             seat.setSeatNumber(seatNumber);
             seat.setBooking(finalBooking);
@@ -106,12 +101,12 @@ public class BookingService {
 
         return bookings.stream()
                 .map(booking -> new BookingResponseDTO(
-                        booking.getBranchId().getNeighborhood(), // Barrio del cine
-                        booking.getFunction().getStartTime(), // Hora de inicio
-                        booking.getFunction().getEndTime(), // Hora de fin
-                        booking.getMovieTitle().getTitle(), // Título de la película
+                        booking.getBranchId().getNeighborhood(),
+                        booking.getFunction().getStartTime(),
+                        booking.getFunction().getEndTime(),
+                        booking.getMovieTitle().getTitle(),
                         booking.getSeats().stream()
-                                .map(seat -> seat.getSeatNumber()) // Asientos reservados
+                                .map(seat -> seat.getSeatNumber())
                                 .collect(Collectors.toList())
                 ))
                 .collect(Collectors.toList());

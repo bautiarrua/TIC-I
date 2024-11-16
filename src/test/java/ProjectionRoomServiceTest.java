@@ -78,5 +78,4 @@ public class ProjectionRoomServiceTest {
 
         assertThrows(LimiteAlcanzado.class, () -> projectionRoomService.addRoom(room));
     }
-
 }

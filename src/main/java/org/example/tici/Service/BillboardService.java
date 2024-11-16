@@ -19,8 +19,10 @@ import java.util.Optional;
 public class BillboardService {
     @Autowired
     private BillboardRepository billboardRepository;
+
     @Autowired
     private MovieRepository movieRepository;
+
     @Autowired
     private BranchesRepository branchesRepository;
 
@@ -55,9 +57,6 @@ public class BillboardService {
     }
 
     public Billboard getBillboardByBranchId(int branchId) throws NoExiste {
-//        if(billboardRepository.findByIdBill(branchId) == null){
-//            throw new NoExiste();
-//        }
         Billboard billboard = billboardRepository.findByBranchId_IdBran(branchId);
         if (billboard == null) {
             throw new NoExiste();
